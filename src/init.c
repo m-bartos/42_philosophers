@@ -6,7 +6,7 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 10:22:14 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/25 16:03:14 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/25 16:05:01 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,11 +84,6 @@ void	add_max_eat_rounds(char	*str_max_eat_rounds, t_program *program)
 void	init(int argc, char **argv, t_program *program)
 {
 	//init program
-	if (argc < 5)
-	{
-		ft_putstr_fd("Error: Not enough parameters.\n", 2);
-		exit(21);
-	}
 	if (init_struct_program(argv, program) == 0)
 	{
 		exit(22);
