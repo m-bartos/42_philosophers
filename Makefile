@@ -6,7 +6,7 @@
 #    By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/21 10:59:06 by mbartos           #+#    #+#              #
-#    Updated: 2024/01/24 15:57:08 by mbartos          ###   ########.fr        #
+#    Updated: 2024/01/25 10:40:41 by mbartos          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ INC_LIBFT =		-I ./libft
 
 #sources
 SRC_PATH =	src/
-SRC = 	philo.c
+SRC = 	philo.c init.c
 SRCS =	$(addprefix $(SRC_PATH), $(SRC))
 
 #objects
