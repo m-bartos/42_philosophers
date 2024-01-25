@@ -6,7 +6,7 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 15:21:12 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/25 15:59:29 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/25 16:17:36 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,20 @@ void	args_error(void)
 	exit(5);
 }
 
+void	zero_philo_error(void)
+{
+	ft_putstr_fd("Error: At least one philosopher needed.", 2);
+	exit(5);
+}
+
 void	check_args(int argc, char **argv)
 {
 	if (argc < 5)
 		args_error();
 	if (ft_int_atoi(argv[1]) < 0)
 		args_error();
+	if (ft_int_atoi(argv[1]) == 0)
+		zero_philo_error();
 	if (ft_int_atoi(argv[2]) < 0)
 		args_error();
 	if (ft_int_atoi(argv[3]) < 0)
