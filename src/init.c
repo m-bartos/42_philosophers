@@ -6,20 +6,19 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 10:22:14 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/25 16:05:01 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/25 16:10:12 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	init_one_philo(t_program *program, t_onephilo *onephilo_to_fill)
+void	init_one_philo(t_program *program, t_onephilo *onephilo_to_fill)
 {
 	onephilo_to_fill->time_to_die = program->init_time_to_die;
 	onephilo_to_fill->time_to_eat = program->init_time_to_eat;
 	onephilo_to_fill->time_to_sleep = program->init_time_to_sleep;
 	onephilo_to_fill->left_fork = 0;
 	onephilo_to_fill->right_fork = 0;
-	return (1);
 }
 
 int	init_philos_arr(t_program *program)
@@ -41,14 +40,13 @@ int	init_philos_arr(t_program *program)
 	return (1);
 }
 
-int	init_times(char **argv, t_program *program)
+void	init_times(char **argv, t_program *program)
 {
 	program->init_time_to_die = ft_int_atoi(argv[2]);
 	program->init_time_to_eat = ft_int_atoi(argv[3]);
 	program->init_time_to_sleep = ft_int_atoi(argv[4]);
 	program->time = 0;
 	program->max_eat_rounds = -1;
-	return (1);
 }
 
 int	init_forks(char *str_forks, t_program *program)
@@ -69,10 +67,11 @@ int	init_struct_program(char **argv, t_program *program)
 {
 	if (!init_forks(argv[1], program))
 		return (0);
-	if (!init_times(argv, program))
-		return (0);
+		//free struct
+	init_times(argv, program);
 	if (!init_philos_arr(program))
 		return (0);
+		//free struct
 	return (1);
 }
 
@@ -85,9 +84,7 @@ void	init(int argc, char **argv, t_program *program)
 {
 	//init program
 	if (init_struct_program(argv, program) == 0)
-	{
-		exit(22);
-	}
+		exit(22); // could be inside init_struct
 	if (argc == 6)
 		add_max_eat_rounds(argv[5], program);
 }
