@@ -6,7 +6,7 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 10:22:14 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/25 15:20:31 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/25 16:03:14 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ int	init_times(char **argv, t_program *program)
 	program->init_time_to_die = ft_int_atoi(argv[2]);
 	program->init_time_to_eat = ft_int_atoi(argv[3]);
 	program->init_time_to_sleep = ft_int_atoi(argv[4]);
+	program->time = 0;
+	program->max_eat_rounds = -1;
 	return (1);
 }
 
