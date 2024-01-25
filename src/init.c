@@ -6,7 +6,7 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 10:22:14 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/25 13:29:39 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/25 15:20:31 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,9 @@ int	init_philos_arr(t_program *program)
 
 int	init_times(char **argv, t_program *program)
 {
-	program->init_time_to_die = ft_atoi(argv[2]);
-	program->init_time_to_eat = ft_atoi(argv[3]);
-	program->init_time_to_sleep = ft_atoi(argv[4]);
+	program->init_time_to_die = ft_int_atoi(argv[2]);
+	program->init_time_to_eat = ft_int_atoi(argv[3]);
+	program->init_time_to_sleep = ft_int_atoi(argv[4]);
 	return (1);
 }
 
@@ -53,7 +53,7 @@ int	init_forks(char *str_forks, t_program *program)
 {
 	int	i;
 
-	program->nof_forks = ft_atoi(str_forks);
+	program->nof_forks = ft_int_atoi(str_forks);
 	program->forks = (int *) malloc(sizeof(int) * (program->nof_forks));
 	if (program->forks == NULL)
 		return (0);
@@ -74,15 +74,23 @@ int	init_struct_program(char **argv, t_program *program)
 	return (1);
 }
 
-int	init(int argc, char **argv, t_program *program)
+void	add_max_eat_rounds(char	*str_max_eat_rounds, t_program *program)
+{
+	program->max_eat_rounds = ft_int_atoi(str_max_eat_rounds);
+}
+
+void	init(int argc, char **argv, t_program *program)
 {
 	//init program
-	if (argc < 2)
+	if (argc < 5)
+	{
+		ft_putstr_fd("Error: Not enough parameters.\n", 2);
 		exit(21);
+	}
 	if (init_struct_program(argv, program) == 0)
 	{
-		// free
 		exit(22);
 	}
-	return (1);
+	if (argc == 6)
+		add_max_eat_rounds(argv[5], program);
 }

@@ -32,6 +32,8 @@ void	ft_print_program_struct(t_program *program)
 	ft_printf("Init time to eat: %d\n", program->init_time_to_eat);
 	ft_printf("Init time to sleep: %d\n", program->init_time_to_sleep);
 	ft_printf("Total num of forks(and philosophers): %d\n", program->nof_forks);
+	ft_printf("Actual time: %d\n", program->time);
+	ft_printf("MAX EAT ROUNDS: %d\n", program->max_eat_rounds);
 	ft_printf("\n");
 	i = 0;
 	while (i < program->nof_forks)
@@ -54,6 +56,8 @@ int	main(int argc, char **argv)
 	t_program	program;
 	int			i;
 
+	//check_args
+	check_args(argc, argv);
 	//init whole struct with values from argv
 	init(argc, argv, &program);
 	//printing struct for check

@@ -6,7 +6,7 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:44:43 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/25 13:38:35 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/25 15:56:16 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 
 # include "../lib/libft/libft.h"
 # include <pthread.h>
+
+# define INT_MAX 2147483647
+# define INT_MIN -2147483648
 
 typedef struct onephilo
 {
@@ -35,10 +38,15 @@ typedef struct program
 	pthread_mutex_t	mutex;
 	int				nof_forks;
 	int				*forks;
+	int				time;
+	int				max_eat_rounds;
 }		t_program;
 
+// check_args.c
+void	check_args(int argc, char **argv);
+
 // init.c
-int	init(int argc, char **argv, t_program *program);
+void	init(int argc, char **argv, t_program *program);
 
 
 
