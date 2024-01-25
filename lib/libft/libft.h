@@ -6,7 +6,7 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 16:02:38 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/15 16:04:14 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/25 15:10:30 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,9 @@
 # include <stdint.h>
 # include <fcntl.h>
 
+# define INT_MAX 2147483647
+# define INT_MIN -2147483648
+
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 1
 # endif
@@ -31,6 +34,7 @@ typedef struct s_list
 }					t_list;
 
 int		ft_atoi(const char *str);
+int		ft_int_atoi(const char *str);
 void	ft_bzero(void *s, size_t n);
 void	*ft_calloc(size_t count, size_t size);
 int		ft_isalnum(int c);

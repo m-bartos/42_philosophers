@@ -5,6 +5,7 @@ CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 
 SOURCES =	ft_atoi.c \
+			ft_int_atoi.c \
 			ft_bzero.c \
 			ft_calloc.c \
 			ft_isdigit.c \
