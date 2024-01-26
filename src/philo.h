@@ -6,7 +6,7 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:44:43 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/25 15:56:16 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/26 11:55:20 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ typedef struct onephilo
 
 typedef struct program
 {
-	t_onephilo		**philos_arr;
+	t_onephilo		*philos_arr;
 	int				init_time_to_die;
 	int				init_time_to_eat;
 	int				init_time_to_sleep;
@@ -46,10 +46,7 @@ typedef struct program
 void	check_args(int argc, char **argv);
 
 // init.c
+void	free_t_program(t_program *program);
 void	init(int argc, char **argv, t_program *program);
 
-
-
-
 #endif
-

@@ -40,11 +40,11 @@ void	ft_print_program_struct(t_program *program)
 	{
 		ft_printf("========= Philosopher %d =========\n", i);
 		ft_printf("Fork %d on table: %d\n", i, program->forks[i]);
-		ft_printf("Philo %d - time to die: %d\n", i, program->philos_arr[i]->time_to_die);
-		ft_printf("Philo %d - time to eat: %d\n", i, program->philos_arr[i]->time_to_eat);
-		ft_printf("Philo %d - time to sleep: %d\n", i, program->philos_arr[i]->time_to_sleep);
-		ft_printf("Philo %d - left fork in hand: %d\n", i, program->philos_arr[i]->left_fork);
-		ft_printf("Philo %d - right fork in hand: %d\n", i, program->philos_arr[i]->right_fork);
+		ft_printf("Philo %d - time to die: %d\n", i, program->philos_arr[i].time_to_die);
+		ft_printf("Philo %d - time to eat: %d\n", i, program->philos_arr[i].time_to_eat);
+		ft_printf("Philo %d - time to sleep: %d\n", i, program->philos_arr[i].time_to_sleep);
+		ft_printf("Philo %d - left fork in hand: %d\n", i, program->philos_arr[i].left_fork);
+		ft_printf("Philo %d - right fork in hand: %d\n", i, program->philos_arr[i].right_fork);
 		ft_printf("\n");
 		i++;
 	}
@@ -52,7 +52,7 @@ void	ft_print_program_struct(t_program *program)
 
 int	main(int argc, char **argv)
 {
-	t_onephilo		one_philo[5];
+	t_onephilo	one_philo[5];
 	t_program	program;
 	int			i;
 
@@ -78,5 +78,6 @@ int	main(int argc, char **argv)
 		i++;
 	}
 	pthread_mutex_destroy(&program.mutex);
+	free_t_program(&program);
 	return (0);
 }
