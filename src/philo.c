@@ -66,13 +66,13 @@ int	main(int argc, char **argv)
 	// playing with threads
 	pthread_mutex_init(&program.mutex, NULL);
 	i = 0;
-	while (i < 5)
+	while (i < program.nof_forks)
 	{
 		pthread_create(&one_philo[i].thread, NULL, &routine, &program);
 		i++;
 	}
 	i = 0;
-	while (i < 5)
+	while (i < program.nof_forks)
 	{
 		pthread_join(one_philo[i].thread, NULL);
 		i++;
