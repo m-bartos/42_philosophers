@@ -6,7 +6,7 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:44:43 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/26 13:27:42 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/26 13:30:26 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <pthread.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <stdio.h>
 
 # define INT_MAX 2147483647
 # define INT_MIN -2147483648

@@ -12,8 +12,6 @@
 
 #include "philo.h"
 
-#include <stdio.h> //delete!
-
 void *routine(void *program)
 {
 	t_program *program2;
