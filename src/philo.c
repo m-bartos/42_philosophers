@@ -6,11 +6,43 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 13:34:59 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/26 13:35:04 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/26 14:56:51 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	grab_right_fork(t_program *program, int philo_index)
+{
+	if (program->forks[philo_index] == 1)
+	{
+		program->forks[philo_index] = 0;
+		program->philos_arr[philo_index].right_fork = 1;
+		printf("%d     %d has taken a right fork", program->time, philo_index);
+	}
+}
+
+void	grab_left_fork(t_program *program, int philo_index)
+{
+	if (philo_index == program->nof_forks - 1)
+	{
+		if (program->forks[0] == 1)
+		{
+			program->forks[0] = 0;
+			program->philos_arr[philo_index].left_fork = 1;
+			printf("%d     %d has taken a left fork", program->time, philo_index);
+		}
+	}
+	else
+	{
+		if (program->forks[philo_index + 1] == 1)
+		{
+			program->forks[philo_index + 1] = 0;
+			program->philos_arr[philo_index].left_fork = 1;
+			printf("%d     %d has taken a left fork", program->time, philo_index);
+		}
+	}
+}
 
 void *routine(void *program)
 {
@@ -56,9 +88,7 @@ int	main(int argc, char **argv)
 	t_program	program;
 	int			i;
 
-	//check_args
 	check_args(argc, argv);
-	//init whole struct with values from argv
 	init(argc, argv, &program);
 	//printing struct for check
 	ft_print_program_struct(&program);
