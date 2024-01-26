@@ -6,7 +6,7 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:44:43 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/26 11:55:20 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/26 13:20:41 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,9 @@ void	check_args(int argc, char **argv);
 // init.c
 void	free_t_program(t_program *program);
 void	init(int argc, char **argv, t_program *program);
+
+// libft_funcs.c
+int		ft_int_atoi(const char *str);
+void	ft_putstr_fd(char *s, int fd);
 
 #endif
