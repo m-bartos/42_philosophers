@@ -6,7 +6,7 @@
 #    By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/21 10:59:06 by mbartos           #+#    #+#              #
-#    Updated: 2024/01/26 13:27:29 by mbartos          ###   ########.fr        #
+#    Updated: 2024/01/26 13:38:46 by mbartos          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,7 @@ OBJS =		$(addprefix $(OBJ_PATH), $(OBJ))
 all: $(NAME)
 
 $(OBJ_PATH)%.o :$(SRC_PATH)%.c
-	@$(CC) $(CFLAGS) $(THREADFLAGS) -c $< -o $@ $(INC_LIBFT)
+	@$(CC) $(CFLAGS) $(THREADFLAGS) -c $< -o $@
 
 $(OBJS): $(OBJ_PATH)
 
