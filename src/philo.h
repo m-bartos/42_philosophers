@@ -6,7 +6,7 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:44:43 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/26 13:30:26 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/26 15:00:13 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,5 +54,8 @@ void	init(int argc, char **argv, t_program *program);
 // libft_funcs.c
 int		ft_int_atoi(const char *str);
 void	ft_putstr_fd(char *s, int fd);
+
+// philo_utils.c
+void	ft_print_program_struct(t_program *program);
 
 #endif

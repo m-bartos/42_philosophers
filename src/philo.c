@@ -6,7 +6,7 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 13:34:59 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/26 14:56:51 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/26 14:59:50 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,33 +53,6 @@ void *routine(void *program)
 	printf("Test from thread!\n");
 	pthread_mutex_unlock(&program2->mutex);
 	return (NULL);
-}
-
-void	ft_print_program_struct(t_program *program)
-{
-	int i;
-
-	printf("========= PROGRAM STRUCT =========\n");
-	printf("Init time to die: %d\n", program->init_time_to_die);
-	printf("Init time to eat: %d\n", program->init_time_to_eat);
-	printf("Init time to sleep: %d\n", program->init_time_to_sleep);
-	printf("Total num of forks(and philosophers): %d\n", program->nof_forks);
-	printf("Actual time: %d\n", program->time);
-	printf("MAX EAT ROUNDS: %d\n", program->max_eat_rounds);
-	printf("\n");
-	i = 0;
-	while (i < program->nof_forks)
-	{
-		printf("========= Philosopher %d =========\n", i);
-		printf("Fork %d on table: %d\n", i, program->forks[i]);
-		printf("Philo %d - time to die: %d\n", i, program->philos_arr[i].time_to_die);
-		printf("Philo %d - time to eat: %d\n", i, program->philos_arr[i].time_to_eat);
-		printf("Philo %d - time to sleep: %d\n", i, program->philos_arr[i].time_to_sleep);
-		printf("Philo %d - left fork in hand: %d\n", i, program->philos_arr[i].left_fork);
-		printf("Philo %d - right fork in hand: %d\n", i, program->philos_arr[i].right_fork);
-		printf("\n");
-		i++;
-	}
 }
 
 int	main(int argc, char **argv)

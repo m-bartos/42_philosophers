@@ -6,7 +6,7 @@
 #    By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/21 10:59:06 by mbartos           #+#    #+#              #
-#    Updated: 2024/01/26 13:38:46 by mbartos          ###   ########.fr        #
+#    Updated: 2024/01/26 14:59:34 by mbartos          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ THREADFLAGS = -pthread
 
 #sources
 SRC_PATH =	src/
-SRC = 	philo.c init.c check_args.c libft_funcs.c
+SRC = 	philo.c init.c check_args.c libft_funcs.c philo_utils.c
 SRCS =	$(addprefix $(SRC_PATH), $(SRC))
 
 #objects
