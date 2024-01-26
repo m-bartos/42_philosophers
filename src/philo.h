@@ -6,7 +6,7 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:44:43 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/26 15:00:13 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/26 15:23:39 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,19 +27,19 @@ typedef struct onephilo
 	int			time_to_die;
 	int			time_to_eat;
 	int			time_to_sleep;
-	int			left_fork;
-	int			right_fork;
+	int			hold_left_fork;
+	int			hold_right_fork;
+	int			fork_on_table;
 }		t_onephilo;
 
 typedef struct program
 {
+	int				nof_philos;
 	t_onephilo		*philos_arr;
 	int				init_time_to_die;
 	int				init_time_to_eat;
 	int				init_time_to_sleep;
 	pthread_mutex_t	mutex;
-	int				nof_forks;
-	int				*forks;
 	int				time;
 	int				max_eat_rounds;
 }		t_program;
