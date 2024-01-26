@@ -6,15 +6,16 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:44:43 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/26 13:20:41 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/26 13:27:42 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
-# include "../lib/libft/libft.h"
 # include <pthread.h>
+# include <stdlib.h>
+# include <unistd.h>
 
 # define INT_MAX 2147483647
 # define INT_MIN -2147483648
