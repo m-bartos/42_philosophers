@@ -1,22 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   libft_funcs.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/24 14:03:45 by mbartos           #+#    #+#             */
-/*   Updated: 2023/10/23 16:05:42 by mbartos          ###   ########.fr       */
+/*   Created: 2024/01/26 13:19:19 by mbartos           #+#    #+#             */
+/*   Updated: 2024/01/26 13:20:17 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "philo.h"
 
-int	ft_atoi(const char *str)
+int	ft_int_atoi(const char *str)
 {
-	int	i;
-	int	sign;
-	int	number;
+	int		i;
+	long	sign;
+	long	number;
 
 	i = 0;
 	sign = 1;
@@ -31,11 +31,19 @@ int	ft_atoi(const char *str)
 	else if (str[i] == '+')
 		i++;
 	else if (!(str[i] >= '0' && str[i] <= '9'))
-		return (0);
+		return (-1);
 	while (str[i] >= '0' && str[i] <= '9')
+		number = number * 10 + str[i++] - '0';
+	number = number * sign;
+	if (number <= INT_MAX && number >= 0)
+		return((int) number);
+	return (-1);
+}
+
+void	ft_putstr_fd(char *s, int fd)
+{
+	while (*s)
 	{
-		number = number * 10 + str[i] - '0';
-		i++;
+		write(fd, s++, 1);
 	}
-	return (number * sign);
 }

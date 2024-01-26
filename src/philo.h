@@ -6,15 +6,17 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:44:43 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/25 15:56:16 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/26 13:30:26 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
-# include "../lib/libft/libft.h"
 # include <pthread.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include <stdio.h>
 
 # define INT_MAX 2147483647
 # define INT_MIN -2147483648
@@ -31,7 +33,7 @@ typedef struct onephilo
 
 typedef struct program
 {
-	t_onephilo		**philos_arr;
+	t_onephilo		*philos_arr;
 	int				init_time_to_die;
 	int				init_time_to_eat;
 	int				init_time_to_sleep;
@@ -46,10 +48,11 @@ typedef struct program
 void	check_args(int argc, char **argv);
 
 // init.c
+void	free_t_program(t_program *program);
 void	init(int argc, char **argv, t_program *program);
 
-
-
+// libft_funcs.c
+int		ft_int_atoi(const char *str);
+void	ft_putstr_fd(char *s, int fd);
 
 #endif
-
