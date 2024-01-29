@@ -6,7 +6,7 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:44:43 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/26 13:30:26 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/29 10:40:12 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,26 +21,34 @@
 # define INT_MAX 2147483647
 # define INT_MIN -2147483648
 
-typedef struct onephilo
+typedef struct s_shared_info
 {
-	pthread_t	thread;
-	int			time_to_die;
-	int			time_to_eat;
-	int			time_to_sleep;
-	int			left_fork;
-	int			right_fork;
-}		t_onephilo;
-
-typedef struct program
-{
-	t_onephilo		*philos_arr;
+	int				*table_forks;
+	pthread_mutex_t	*forks_mutex;
+	pthread_mutex_t	printf_mutex;
+	int				time;
+	int				nof_philos;
 	int				init_time_to_die;
 	int				init_time_to_eat;
 	int				init_time_to_sleep;
-	pthread_mutex_t	mutex;
-	int				nof_forks;
-	int				*forks;
-	int				time;
+}		t_shared_info;
+
+typedef struct s_onephilo
+{
+	int				id;
+	pthread_t		thread;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				hold_left_fork;
+	int				hold_right_fork;
+	t_shared_info	*shared;
+}		t_onephilo;
+
+typedef struct s_program
+{
+	t_onephilo		*philos_arr;
+	t_shared_info	*shared;
 	int				max_eat_rounds;
 }		t_program;
 
@@ -49,10 +57,13 @@ void	check_args(int argc, char **argv);
 
 // init.c
 void	free_t_program(t_program *program);
-void	init(int argc, char **argv, t_program *program);
+void	init(int argc, char **argv, t_program *program, t_shared_info *mutexes);
 
 // libft_funcs.c
 int		ft_int_atoi(const char *str);
 void	ft_putstr_fd(char *s, int fd);
+
+// philo_utils.c
+void	ft_print_program_struct(t_program *program);
 
 #endif

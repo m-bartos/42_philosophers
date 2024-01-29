@@ -6,78 +6,103 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 13:34:59 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/26 13:35:04 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/29 10:40:07 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void *routine(void *program)
+void	grab_right_fork(t_onephilo *philo)
 {
-	t_program *program2;
+	pthread_mutex_lock(&philo->shared->forks_mutex[philo->id]);
+	if (philo->shared->table_forks[philo->id] == 1)
+	{
+		philo->shared->table_forks[philo->id] = 0;
+		philo->hold_right_fork = 1;
+		pthread_mutex_lock(&philo->shared->printf_mutex);
+		printf("%d     %d has taken a right fork\n", philo->shared->time, philo->id);
+		pthread_mutex_unlock(&philo->shared->printf_mutex);
+	}
+	pthread_mutex_unlock(&philo->shared->forks_mutex[philo->id]);
+}
 
-	program2 = (t_program *) program;
-	pthread_mutex_lock(&program2->mutex);
+void	grab_left_fork(t_onephilo *philo)
+{
+	int	fork_index;
+
+	if (philo->id == (philo->shared->nof_philos - 1))
+		fork_index = 0;
+	else
+		fork_index = philo->id + 1;
+	pthread_mutex_lock(&philo->shared->forks_mutex[fork_index]);
+	if (philo->shared->table_forks[fork_index] == 1)
+	{
+		philo->shared->table_forks[fork_index] = 0;
+		philo->hold_left_fork = 1;
+		pthread_mutex_lock(&philo->shared->printf_mutex);
+		printf("%d     %d has taken a left fork\n", philo->shared->time, philo->id);
+		pthread_mutex_unlock(&philo->shared->printf_mutex);
+	}
+	pthread_mutex_unlock(&philo->shared->forks_mutex[fork_index]);
+}
+
+void	*routine(void *philo_void)
+{
+	t_onephilo *philo;
+
+	philo = (t_onephilo *) philo_void;
+	pthread_mutex_lock(&philo->shared->printf_mutex);
 	printf("Test from thread!\n");
-	pthread_mutex_unlock(&program2->mutex);
+	pthread_mutex_unlock(&philo->shared->printf_mutex);
+	if (philo->id % 2)
+		grab_left_fork(philo);
+	else
+		grab_right_fork(philo);
 	return (NULL);
 }
 
-void	ft_print_program_struct(t_program *program)
-{
-	int i;
-
-	printf("========= PROGRAM STRUCT =========\n");
-	printf("Init time to die: %d\n", program->init_time_to_die);
-	printf("Init time to eat: %d\n", program->init_time_to_eat);
-	printf("Init time to sleep: %d\n", program->init_time_to_sleep);
-	printf("Total num of forks(and philosophers): %d\n", program->nof_forks);
-	printf("Actual time: %d\n", program->time);
-	printf("MAX EAT ROUNDS: %d\n", program->max_eat_rounds);
-	printf("\n");
-	i = 0;
-	while (i < program->nof_forks)
-	{
-		printf("========= Philosopher %d =========\n", i);
-		printf("Fork %d on table: %d\n", i, program->forks[i]);
-		printf("Philo %d - time to die: %d\n", i, program->philos_arr[i].time_to_die);
-		printf("Philo %d - time to eat: %d\n", i, program->philos_arr[i].time_to_eat);
-		printf("Philo %d - time to sleep: %d\n", i, program->philos_arr[i].time_to_sleep);
-		printf("Philo %d - left fork in hand: %d\n", i, program->philos_arr[i].left_fork);
-		printf("Philo %d - right fork in hand: %d\n", i, program->philos_arr[i].right_fork);
-		printf("\n");
-		i++;
-	}
-}
+//check for how many times each philo ate (add nof_eats to t_onephilo)
 
 int	main(int argc, char **argv)
 {
-	t_onephilo	one_philo[5];
-	t_program	program;
-	int			i;
+	t_program		program;
+	t_shared_info	shared;
+	int				i;
 
-	//check_args
+
 	check_args(argc, argv);
-	//init whole struct with values from argv
-	init(argc, argv, &program);
+	init(argc, argv, &program, &shared);
+
 	//printing struct for check
 	ft_print_program_struct(&program);
 
 	// playing with threads
-	pthread_mutex_init(&program.mutex, NULL);
 	i = 0;
-	while (i < program.nof_forks)
+	while (i < shared.nof_philos)
 	{
-		pthread_create(&one_philo[i].thread, NULL, &routine, &program);
+		pthread_mutex_init(&shared.forks_mutex[i], NULL);
+		i++;
+	}
+	pthread_mutex_init(&program.shared->printf_mutex, NULL);
+	i = 0;
+	while (i < shared.nof_philos)
+	{
+		pthread_create(&program.philos_arr[i].thread, NULL, &routine, &program.philos_arr[i]);
 		i++;
 	}
 	i = 0;
-	while (i < program.nof_forks)
+	while (i < shared.nof_philos)
 	{
-		pthread_join(one_philo[i].thread, NULL);
+		pthread_join(program.philos_arr[i].thread, NULL);
 		i++;
 	}
-	pthread_mutex_destroy(&program.mutex);
+	i = 0;
+	while (i < shared.nof_philos)
+	{
+		pthread_mutex_destroy(&shared.forks_mutex[i]);
+		i++;
+	}
+	pthread_mutex_destroy(&program.shared->printf_mutex);
 	free_t_program(&program);
 	return (0);
 }
