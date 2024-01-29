@@ -6,7 +6,7 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 10:22:14 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/29 14:42:57 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/29 15:40:06 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,21 @@
 long int	get_actual_time_ms(void)
 {
 	struct timeval	time;
+	long int		time_in_ms;
 
 	gettimeofday(&time, NULL);
-	return (time.tv_usec / 1000);
+	time_in_ms = (long int) (time.tv_usec / 1000);
+	return (time_in_ms);
 }
 
-long int	get_party_time(long int time)
+long int	get_party_time(int time)
 {
-	return (get_actual_time_ms() - time);
+	long int	party_time;
+	long int	start_time;
+
+	start_time = (long int) time;
+	party_time = (get_actual_time_ms() - start_time);
+	return (party_time);
 }
 
 void	free_t_program(t_program *program)

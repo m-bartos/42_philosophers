@@ -6,7 +6,7 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:44:43 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/29 14:41:27 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/29 15:40:10 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	check_args(int argc, char **argv);
 void		free_t_program(t_program *program);
 void		init(int argc, char **argv, t_program *program, t_shared_info *mutexes);
 long int	get_actual_time_ms(void);
-long int	get_party_time(long int time);
+long int	get_party_time(int time);
 
 // libft_funcs.c
 int		ft_int_atoi(const char *str);
