@@ -6,7 +6,7 @@
 #    By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/21 10:59:06 by mbartos           #+#    #+#              #
-#    Updated: 2024/01/26 14:59:34 by mbartos          ###   ########.fr        #
+#    Updated: 2024/01/29 13:04:07 by mbartos          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,8 +21,9 @@ NAME =		philo
 
 #compiler
 CC =		gcc
-CFLAGS =	-Wall -Wextra -Werror
-THREADFLAGS = -pthread
+CFLAGS =	-Wall -Wextra -Werror -fsanitize=thread -g
+# CFLAGS =	-Wall -Wextra -Werror -g
+THREADFLAGS = -lpthread
 
 #sources
 SRC_PATH =	src/
@@ -46,7 +47,7 @@ $(OBJ_PATH):
 
 $(NAME): $(OBJS)
 	@echo "$(BOLD)$(BCYAN)[ Compiling $(NAME)... ]$(NC)"
-	@$(CC) $(OBJS) -o $(NAME)
+	@$(CC) $(CFLAGS) $(THREADFLAGS) $(OBJS) -o $(NAME)
 	@echo "$(BOLD)$(GREEN)[ $(NAME) ready! ]$(NC)"
 
 clean:

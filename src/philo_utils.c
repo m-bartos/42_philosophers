@@ -6,7 +6,7 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 14:59:27 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/29 10:34:54 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/29 14:39:07 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	ft_print_program_struct(t_program *program)
 	printf("Init time to eat: %d\n", program->shared->init_time_to_eat);
 	printf("Init time to sleep: %d\n", program->shared->init_time_to_sleep);
 	printf("Total num of forks(and philosophers): %d\n", program->shared->nof_philos);
-	printf("Actual time: %d\n", program->shared->time);
+	printf("Start time: %ld\n", program->shared->time);
 	printf("MAX EAT ROUNDS: %d\n", program->max_eat_rounds);
 	printf("\n");
 

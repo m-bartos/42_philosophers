@@ -6,11 +6,24 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 10:22:14 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/29 10:26:34 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/29 14:42:57 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+long int	get_actual_time_ms(void)
+{
+	struct timeval	time;
+
+	gettimeofday(&time, NULL);
+	return (time.tv_usec / 1000);
+}
+
+long int	get_party_time(long int time)
+{
+	return (get_actual_time_ms() - time);
+}
 
 void	free_t_program(t_program *program)
 {
@@ -51,7 +64,7 @@ void	init_fill_t_program(char **argv, t_program *program, t_shared_info *shared)
 	program->shared = shared;
 	program->shared->table_forks = NULL;
 	program->shared->forks_mutex = NULL;
-	shared->time = 0;
+	shared->time = get_actual_time_ms();
 	program->shared->nof_philos = ft_int_atoi(argv[1]);
 	shared->init_time_to_die = ft_int_atoi(argv[2]);
 	shared->init_time_to_eat = ft_int_atoi(argv[3]);
