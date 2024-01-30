@@ -6,7 +6,7 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 10:22:14 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/30 10:21:34 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/30 13:08:00 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void	init_one_philo(t_onephilo *philo, t_shared_info *shared, int id)
 	// philo->time_to_die = shared->init_time_to_die;
 	// philo->time_to_eat = shared->init_time_to_eat;
 	// philo->time_to_sleep = shared->init_time_to_sleep;
+	philo->start_of_eating = get_actual_time_ms();
 	philo->hold_left_fork = 0;
 	philo->hold_right_fork = 0;
 	philo->shared = shared;
@@ -74,6 +75,7 @@ void	init_fill_t_program(char **argv, t_program *program, t_shared_info *shared)
 	shared->init_time_to_die = ft_int_atoi(argv[2]);
 	shared->init_time_to_eat = ft_int_atoi(argv[3]);
 	shared->init_time_to_sleep = ft_int_atoi(argv[4]);
+	shared->game_over = 0;
 	program->philos_arr = NULL;
 	program->max_eat_rounds = -1;
 

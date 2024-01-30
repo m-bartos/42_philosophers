@@ -6,7 +6,7 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:44:43 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/30 11:02:35 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/30 13:07:23 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,15 @@ typedef struct s_shared_info
 	long			init_time_to_die;
 	long			init_time_to_eat;
 	long			init_time_to_sleep;
+	int				game_over;
 }		t_shared_info;
 
 typedef struct s_onephilo
 {
 	int				id;
 	pthread_t		thread;
-	// long			start_of_eating;
-	// pthread_mutex_t	start_of_eating_mutex;
+	long			start_of_eating;
+	pthread_mutex_t	start_of_eating_mutex;
 	// int				time_to_die;
 	// int				time_to_eat;
 	// int				time_to_sleep;
@@ -52,7 +53,7 @@ typedef struct s_program
 {
 	t_onephilo		*philos_arr;
 	t_shared_info	*shared;
-	// pthread_t		watch_thread;
+	pthread_t		watch_thread;
 	int				max_eat_rounds;
 }		t_program;
 
