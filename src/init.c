@@ -6,11 +6,29 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 10:22:14 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/29 10:26:34 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/30 13:08:00 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+long int	get_actual_time_ms(void)
+{
+	struct timeval	time;
+	long		time_in_ms;
+
+	gettimeofday(&time, NULL);
+	time_in_ms = (long) (time.tv_sec * 1000 + time.tv_usec / 1000);
+	return (time_in_ms);
+}
+
+long int	get_party_time(long time)
+{
+	long	party_time;
+
+	party_time = (get_actual_time_ms() - time);
+	return (party_time);
+}
 
 void	free_t_program(t_program *program)
 {
@@ -22,9 +40,10 @@ void	free_t_program(t_program *program)
 void	init_one_philo(t_onephilo *philo, t_shared_info *shared, int id)
 {
 	philo->id = id;
-	philo->time_to_die = shared->init_time_to_die;
-	philo->time_to_eat = shared->init_time_to_eat;
-	philo->time_to_sleep = shared->init_time_to_sleep;
+	// philo->time_to_die = shared->init_time_to_die;
+	// philo->time_to_eat = shared->init_time_to_eat;
+	// philo->time_to_sleep = shared->init_time_to_sleep;
+	philo->start_of_eating = get_actual_time_ms();
 	philo->hold_left_fork = 0;
 	philo->hold_right_fork = 0;
 	philo->shared = shared;
@@ -51,11 +70,12 @@ void	init_fill_t_program(char **argv, t_program *program, t_shared_info *shared)
 	program->shared = shared;
 	program->shared->table_forks = NULL;
 	program->shared->forks_mutex = NULL;
-	shared->time = 0;
+	shared->time = get_actual_time_ms();
 	program->shared->nof_philos = ft_int_atoi(argv[1]);
 	shared->init_time_to_die = ft_int_atoi(argv[2]);
 	shared->init_time_to_eat = ft_int_atoi(argv[3]);
 	shared->init_time_to_sleep = ft_int_atoi(argv[4]);
+	shared->game_over = 0;
 	program->philos_arr = NULL;
 	program->max_eat_rounds = -1;
 
