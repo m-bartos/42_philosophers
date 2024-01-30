@@ -6,7 +6,7 @@
 #    By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/21 10:59:06 by mbartos           #+#    #+#              #
-#    Updated: 2024/01/30 11:06:54 by mbartos          ###   ########.fr        #
+#    Updated: 2024/01/30 11:35:06 by mbartos          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,7 @@ NAME =		philo
 #compiler
 CC =		gcc
 CFLAGS =	-Wall -Wextra -Werror -fsanitize=thread -g -lpthread
+# CFLAGS =	-Wall -Wextra -Werror -g -pthread
 # CFLAGS =	-Wall -Wextra -Werror -pthread
 
 #sources
