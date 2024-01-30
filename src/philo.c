@@ -6,7 +6,7 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 13:34:59 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/30 14:11:44 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/30 14:29:57 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,10 @@ void	grab_right_fork(t_onephilo *philo)
 	int	in_loop;
 
 	in_loop = 1;
-	while(in_loop == 1)
+	pthread_mutex_lock(&philo->shared->printf_mutex);
+	while(in_loop == 1 && philo->shared->game_over == 0)
 	{
+		pthread_mutex_unlock(&philo->shared->printf_mutex);
 		pthread_mutex_lock(&philo->shared->forks_mutex[philo->id]);
 		if (philo->shared->table_forks[philo->id] == 1)
 		{
@@ -30,7 +32,9 @@ void	grab_right_fork(t_onephilo *philo)
 			in_loop = 0;
 		}
 		pthread_mutex_unlock(&philo->shared->forks_mutex[philo->id]);
+		pthread_mutex_lock(&philo->shared->printf_mutex);
 	}
+	pthread_mutex_unlock(&philo->shared->printf_mutex);
 }
 
 void	grab_left_fork(t_onephilo *philo)
@@ -43,8 +47,10 @@ void	grab_left_fork(t_onephilo *philo)
 	else
 		fork_index = philo->id + 1;
 	in_loop = 1;
-	while(in_loop == 1)
+	pthread_mutex_lock(&philo->shared->printf_mutex);
+	while(in_loop == 1 && philo->shared->game_over == 0)
 	{
+		pthread_mutex_unlock(&philo->shared->printf_mutex);
 		pthread_mutex_lock(&philo->shared->forks_mutex[fork_index]);
 		if (philo->shared->table_forks[fork_index] == 1)
 		{
@@ -56,7 +62,9 @@ void	grab_left_fork(t_onephilo *philo)
 			in_loop = 0;
 		}
 		pthread_mutex_unlock(&philo->shared->forks_mutex[fork_index]);
+		pthread_mutex_lock(&philo->shared->printf_mutex);
 	}
+	pthread_mutex_unlock(&philo->shared->printf_mutex);
 }
 
 void	sleep_ms(long period)
@@ -87,8 +95,15 @@ void	put_both_forks_on_table(t_onephilo *philo)
 	pthread_mutex_unlock(&philo->shared->forks_mutex[fork_index]);
 }
 
-void	eating(t_onephilo *philo)
+int	eating(t_onephilo *philo)
 {
+	pthread_mutex_lock(&philo->shared->printf_mutex);
+	if (philo->shared->game_over == 1)
+	{
+		pthread_mutex_unlock(&philo->shared->printf_mutex);
+		return (0);
+	}
+	pthread_mutex_unlock(&philo->shared->printf_mutex);
 	pthread_mutex_lock(&philo->shared->printf_mutex);
 	printf("%ld     %d   is eating\n", get_party_time(philo->shared->time), philo->id);
 	pthread_mutex_unlock(&philo->shared->printf_mutex);
@@ -96,21 +111,38 @@ void	eating(t_onephilo *philo)
 	philo->start_of_eating = get_actual_time_ms();
 	pthread_mutex_unlock(&philo->start_of_eating_mutex);
 	sleep_ms(philo->shared->init_time_to_eat);
+	return (1);
 }
 
-void	sleeping(t_onephilo *philo)
+int	sleeping(t_onephilo *philo)
 {
+	pthread_mutex_lock(&philo->shared->printf_mutex);
+	if (philo->shared->game_over == 1)
+	{
+		pthread_mutex_unlock(&philo->shared->printf_mutex);
+		return (0);
+	}
+	pthread_mutex_unlock(&philo->shared->printf_mutex);
 	pthread_mutex_lock(&philo->shared->printf_mutex);
 	printf("%ld     %d   is sleeping\n", get_party_time(philo->shared->time), philo->id);
 	pthread_mutex_unlock(&philo->shared->printf_mutex);
 	sleep_ms(philo->shared->init_time_to_sleep);
+	return (1);
 }
 
-void	thinking(t_onephilo *philo)
+int	thinking(t_onephilo *philo)
 {
+	pthread_mutex_lock(&philo->shared->printf_mutex);
+	if (philo->shared->game_over == 1)
+	{
+		pthread_mutex_unlock(&philo->shared->printf_mutex);
+		return (0);
+	}
+	pthread_mutex_unlock(&philo->shared->printf_mutex);
 	pthread_mutex_lock(&philo->shared->printf_mutex);
 	printf("%ld     %d   is thinking\n", get_party_time(philo->shared->time), philo->id);
 	pthread_mutex_unlock(&philo->shared->printf_mutex);
+	return (1);
 }
 
 void	*routine(void *philo_void)
@@ -133,39 +165,42 @@ void	*routine(void *philo_void)
 			grab_left_fork(philo);
 		if (philo->hold_right_fork == 1 && philo->hold_left_fork == 1)
 		{
-			eating(philo);
+			if (eating(philo) == 0)
+				return (NULL);
 			put_both_forks_on_table(philo);
 		}
-		sleeping(philo);
-		thinking(philo);
+		if (sleeping(philo) == 0)
+			return (NULL);
+		if (thinking(philo) == 0)
+			return (NULL);
 		pthread_mutex_lock(&philo->shared->printf_mutex);
 	}
 	pthread_mutex_unlock(&philo->shared->printf_mutex);
 	return (NULL);
 }
 
-void	exit_all(t_program *program)
-{
-	int	i;
+// void	exit_all(t_program *program)
+// {
+// 	int	i;
 	
-	i = 0;
-	while (i < program->shared->nof_philos)
-	{
-		pthread_join(program->philos_arr[i].thread, NULL);
-		i++;
-	}
-	pthread_join(program->watch_thread, NULL);
-	i = 0;
-	while (i < program->shared->nof_philos)
-	{
-		pthread_mutex_destroy(&program->shared->forks_mutex[i]);
-		pthread_mutex_destroy(&program->philos_arr[i].start_of_eating_mutex);
-		i++;
-	}
-	pthread_mutex_destroy(&program->shared->printf_mutex);
-	free_t_program(program);
-	exit(999);
-}
+// 	i = 0;
+// 	while (i < program->shared->nof_philos)
+// 	{
+// 		pthread_join(program->philos_arr[i].thread, NULL);
+// 		i++;
+// 	}
+// 	pthread_join(program->watch_thread, NULL);
+// 	i = 0;
+// 	while (i < program->shared->nof_philos)
+// 	{
+// 		pthread_mutex_destroy(&program->shared->forks_mutex[i]);
+// 		pthread_mutex_destroy(&program->philos_arr[i].start_of_eating_mutex);
+// 		i++;
+// 	}
+// 	pthread_mutex_destroy(&program->shared->printf_mutex);
+// 	free_t_program(program);
+// 	exit(999);
+// }
 
 void	*checking_philos(void *program_void)
 {
@@ -183,11 +218,10 @@ void	*checking_philos(void *program_void)
 			if (get_actual_time_ms() - program->philos_arr[i].start_of_eating > program->shared->init_time_to_die)
 			{
 					pthread_mutex_lock(&program->shared->printf_mutex);
-					printf("%ld     %d is dead\n", get_party_time(program->shared->time), program->philos_arr[i].id);
-					pthread_mutex_unlock(&program->shared->printf_mutex);
-					pthread_mutex_lock(&program->shared->printf_mutex);
+					printf("%ld     %d    is dead\n", get_party_time(program->shared->time), program->philos_arr[i].id);
 					program->shared->game_over = 1;
 					pthread_mutex_unlock(&program->shared->printf_mutex);
+					pthread_mutex_unlock(&program->philos_arr[i].start_of_eating_mutex);
 					return (NULL);// needs to be done properly
 			}
 			pthread_mutex_unlock(&program->philos_arr[i].start_of_eating_mutex);
@@ -195,6 +229,7 @@ void	*checking_philos(void *program_void)
 		}
 		i = 0;
 	}
+	return (NULL);
 }
 
 //check for how many times each philo ate (add nof_eats to t_onephilo)
