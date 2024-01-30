@@ -6,7 +6,7 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 10:22:14 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/29 15:40:06 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/30 10:21:34 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,18 @@
 long int	get_actual_time_ms(void)
 {
 	struct timeval	time;
-	long int		time_in_ms;
+	long		time_in_ms;
 
 	gettimeofday(&time, NULL);
-	time_in_ms = (long int) (time.tv_usec / 1000);
+	time_in_ms = (long) (time.tv_sec * 1000 + time.tv_usec / 1000);
 	return (time_in_ms);
 }
 
-long int	get_party_time(int time)
+long int	get_party_time(long time)
 {
-	long int	party_time;
-	long int	start_time;
+	long	party_time;
 
-	start_time = (long int) time;
-	party_time = (get_actual_time_ms() - start_time);
+	party_time = (get_actual_time_ms() - time);
 	return (party_time);
 }
 
@@ -42,9 +40,9 @@ void	free_t_program(t_program *program)
 void	init_one_philo(t_onephilo *philo, t_shared_info *shared, int id)
 {
 	philo->id = id;
-	philo->time_to_die = shared->init_time_to_die;
-	philo->time_to_eat = shared->init_time_to_eat;
-	philo->time_to_sleep = shared->init_time_to_sleep;
+	// philo->time_to_die = shared->init_time_to_die;
+	// philo->time_to_eat = shared->init_time_to_eat;
+	// philo->time_to_sleep = shared->init_time_to_sleep;
 	philo->hold_left_fork = 0;
 	philo->hold_right_fork = 0;
 	philo->shared = shared;
