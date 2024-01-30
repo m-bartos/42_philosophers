@@ -6,7 +6,7 @@
 #    By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/21 10:59:06 by mbartos           #+#    #+#              #
-#    Updated: 2024/01/29 13:04:07 by mbartos          ###   ########.fr        #
+#    Updated: 2024/01/30 11:06:54 by mbartos          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,9 +21,8 @@ NAME =		philo
 
 #compiler
 CC =		gcc
-CFLAGS =	-Wall -Wextra -Werror -fsanitize=thread -g
-# CFLAGS =	-Wall -Wextra -Werror -g
-THREADFLAGS = -lpthread
+CFLAGS =	-Wall -Wextra -Werror -fsanitize=thread -g -lpthread
+# CFLAGS =	-Wall -Wextra -Werror -pthread
 
 #sources
 SRC_PATH =	src/
@@ -38,7 +37,7 @@ OBJS =		$(addprefix $(OBJ_PATH), $(OBJ))
 all: $(NAME)
 
 $(OBJ_PATH)%.o :$(SRC_PATH)%.c
-	@$(CC) $(CFLAGS) $(THREADFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJS): $(OBJ_PATH)
 
@@ -47,7 +46,7 @@ $(OBJ_PATH):
 
 $(NAME): $(OBJS)
 	@echo "$(BOLD)$(BCYAN)[ Compiling $(NAME)... ]$(NC)"
-	@$(CC) $(CFLAGS) $(THREADFLAGS) $(OBJS) -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 	@echo "$(BOLD)$(GREEN)[ $(NAME) ready! ]$(NC)"
 
 clean:
