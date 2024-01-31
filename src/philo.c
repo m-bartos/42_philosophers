@@ -6,7 +6,7 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 13:34:59 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/31 10:51:50 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/31 13:59:08 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	grab_right_fork(t_philo *philo)
 			philo->shared->table_forks[philo->id] = 0;
 			philo->hold_right_fork = 1;
 			pthread_mutex_lock(&philo->shared->printf_mutex);
-			printf("%ld     %d   has taken a right fork\n", get_dinner_time(philo->shared->dinner_start_time), philo->id);
+			printf("%-10ld%-6dhas taken a right fork\n", get_dinner_time(philo->shared->dinner_start_time), philo->id);
 			pthread_mutex_unlock(&philo->shared->printf_mutex);
 			in_loop = 0;
 		}
@@ -57,7 +57,7 @@ void	grab_left_fork(t_philo *philo)
 			philo->shared->table_forks[fork_index] = 0;
 			philo->hold_left_fork = 1;
 			pthread_mutex_lock(&philo->shared->printf_mutex);
-			printf("%ld     %d   has taken a left fork\n", get_dinner_time(philo->shared->dinner_start_time), philo->id);
+			printf("%-10ld%-6dhas taken a left fork\n", get_dinner_time(philo->shared->dinner_start_time), philo->id);
 			pthread_mutex_unlock(&philo->shared->printf_mutex);
 			in_loop = 0;
 		}
@@ -102,12 +102,15 @@ int	eating(t_philo *philo)
 		pthread_mutex_unlock(&philo->shared->printf_mutex);
 		return (0);
 	}
-	printf("%ld     %d   is eating\n", get_dinner_time(philo->shared->dinner_start_time), philo->id);
+	printf("%-10ld%-6dis eating\n", get_dinner_time(philo->shared->dinner_start_time), philo->id);
 	pthread_mutex_unlock(&philo->shared->printf_mutex);
 	pthread_mutex_lock(&philo->eating_start_time_mutex);
 	philo->eating_start_time = get_actual_time_ms();
 	pthread_mutex_unlock(&philo->eating_start_time_mutex);
 	sleep_ms(philo->shared->init_time_to_eat);
+	pthread_mutex_lock(&philo->nof_meals_mutex);
+	philo->nof_meals++;
+	pthread_mutex_unlock(&philo->nof_meals_mutex);
 	return (1);
 }
 
@@ -121,7 +124,7 @@ int	sleeping(t_philo *philo)
 	}
 	pthread_mutex_unlock(&philo->shared->printf_mutex);
 	pthread_mutex_lock(&philo->shared->printf_mutex);
-	printf("%ld     %d   is sleeping\n", get_dinner_time(philo->shared->dinner_start_time), philo->id);
+	printf("%-10ld%-6dis sleeping\n", get_dinner_time(philo->shared->dinner_start_time), philo->id);
 	pthread_mutex_unlock(&philo->shared->printf_mutex);
 	sleep_ms(philo->shared->init_time_to_sleep);
 	return (1);
@@ -137,7 +140,7 @@ int	thinking(t_philo *philo)
 	}
 	pthread_mutex_unlock(&philo->shared->printf_mutex);
 	pthread_mutex_lock(&philo->shared->printf_mutex);
-	printf("%ld     %d   is thinking\n", get_dinner_time(philo->shared->dinner_start_time), philo->id);
+	printf("%-10ld%-6dis thinking\n", get_dinner_time(philo->shared->dinner_start_time), philo->id);
 	pthread_mutex_unlock(&philo->shared->printf_mutex);
 	return (1);
 }
@@ -175,34 +178,68 @@ void	*routine(void *philo_void)
 	return (NULL);
 }
 
-void	*checking_philos(void *program_void)
+int	are_philos_dead(t_dinner *dinner)
 {
-	t_dinner	*program;
-	int			i;
-
-	program = (t_dinner *) program_void;
+	int	i;
 
 	i = 0;
+	while (i < dinner->shared->nof_philos)
+	{
+		pthread_mutex_lock(&dinner->philos_arr[i].eating_start_time_mutex);
+		if (get_actual_time_ms() - dinner->philos_arr[i].eating_start_time > dinner->shared->init_time_to_die)
+		{
+			pthread_mutex_lock(&dinner->shared->printf_mutex);
+			printf("%-10ld%-6dis dead\n", get_dinner_time(dinner->shared->dinner_start_time), dinner->philos_arr[i].id);
+			dinner->shared->dinner_over = 1;
+			pthread_mutex_unlock(&dinner->shared->printf_mutex);
+			pthread_mutex_unlock(&dinner->philos_arr[i].eating_start_time_mutex);
+			return (1);
+		}
+		pthread_mutex_unlock(&dinner->philos_arr[i].eating_start_time_mutex);
+		i++;
+	}
+	return (0);
+}
+
+int	all_have_eaten(t_dinner *dinner)
+{
+	int	i;
+
+	i = 0;
+	while (i < dinner->shared->nof_philos)
+	{
+		pthread_mutex_lock(&dinner->philos_arr[i].nof_meals_mutex);
+		if (dinner->philos_arr[i].nof_meals < dinner->max_eat_rounds)
+		{
+			pthread_mutex_unlock(&dinner->philos_arr[i].nof_meals_mutex);
+			return (0);
+		}
+		pthread_mutex_unlock(&dinner->philos_arr[i].nof_meals_mutex);
+		i++;
+	}
+	pthread_mutex_lock(&dinner->shared->printf_mutex);
+	printf("%-10ldall   philos have eaten at least %d time\n", get_dinner_time(dinner->shared->dinner_start_time), dinner->max_eat_rounds);
+	dinner->shared->dinner_over = 1;
+	pthread_mutex_unlock(&dinner->shared->printf_mutex);
+	return (1);
+
+}
+
+void	*checking_philos(void *dinner_void)
+{
+	t_dinner	*dinner;
+
+	dinner = (t_dinner *) dinner_void;
 	while (1)
 	{
-		while (i < program->shared->nof_philos)
+		if (are_philos_dead(dinner) == 1)
+			return (NULL);
+		if (dinner->max_eat_rounds != -1)
 		{
-			pthread_mutex_lock(&program->philos_arr[i].eating_start_time_mutex);
-			if (get_actual_time_ms() - program->philos_arr[i].eating_start_time > program->shared->init_time_to_die)
-			{
-					pthread_mutex_lock(&program->shared->printf_mutex);
-					printf("%ld     %d    is dead\n", get_dinner_time(program->shared->dinner_start_time), program->philos_arr[i].id);
-					program->shared->dinner_over = 1;
-					pthread_mutex_unlock(&program->shared->printf_mutex);
-					pthread_mutex_unlock(&program->philos_arr[i].eating_start_time_mutex);
-					return (NULL);
-			}
-			pthread_mutex_unlock(&program->philos_arr[i].eating_start_time_mutex);
-			i++;
+			if (all_have_eaten(dinner) == 1)
+				return (NULL);
 		}
-		i = 0;
 	}
-	return (NULL);
 }
 
 //check for how many times each philo ate (add nof_eats to t_onephilo)
