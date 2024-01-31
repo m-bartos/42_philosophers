@@ -6,7 +6,7 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:44:43 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/31 17:24:58 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/31 17:27:21 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ void		*checking_philos(void *dinner_void);
 void		take_right_fork(t_philo *philo);
 void		take_left_fork(t_philo *philo);
 void		put_both_forks_on_table(t_philo *philo);
-int			eating(t_philo *philo);
 
 // init_utils.c
 void		free_t_program(t_dinner *program);
@@ -95,6 +94,7 @@ void		destroy_mutexes(t_dinner *dinner);
 // sleeping_thinking.c
 int			sleeping(t_philo *philo);
 int			thinking(t_philo *philo);
+int			eating(t_philo *philo);
 
 // time.c
 void		sleep_ms(long period);

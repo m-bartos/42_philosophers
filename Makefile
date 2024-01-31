@@ -6,7 +6,7 @@
 #    By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/21 10:59:06 by mbartos           #+#    #+#              #
-#    Updated: 2024/01/31 17:22:14 by mbartos          ###   ########.fr        #
+#    Updated: 2024/01/31 17:29:14 by mbartos          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ CFLAGS =	-Wall -Wextra -Werror -g -pthread
 
 #sources
 SRC_PATH =	src/
-SRC = 	philo.c init.c init_utils.c check_args.c checker_thread.c eating.c libft_funcs.c mutexes_utils.c philo_utils.c sleeping_thinking.c time.c
+SRC = 	philo.c init.c init_utils.c check_args.c checker_thread.c forks_handling.c libft_funcs.c mutexes_utils.c philo_utils.c eat_sleep_think.c time.c
 SRCS =	$(addprefix $(SRC_PATH), $(SRC))
 
 #objects
