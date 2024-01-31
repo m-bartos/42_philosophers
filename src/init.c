@@ -6,7 +6,7 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 10:22:14 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/31 10:42:52 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/31 11:33:31 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void	init_one_philo(t_philo *philo, t_shared *shared, int id)
 	philo->eating_start_time = get_actual_time_ms();
 	philo->hold_left_fork = 0;
 	philo->hold_right_fork = 0;
+	philo->nof_meals = 0;
 	philo->shared = shared;
 }
 
