@@ -6,7 +6,7 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 13:34:59 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/31 13:59:08 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/31 14:07:22 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ void	grab_right_fork(t_philo *philo)
 			philo->shared->table_forks[philo->id] = 0;
 			philo->hold_right_fork = 1;
 			pthread_mutex_lock(&philo->shared->printf_mutex);
-			printf("%-10ld%-6dhas taken a right fork\n", get_dinner_time(philo->shared->dinner_start_time), philo->id);
+			if (philo->shared->dinner_over == 0)
+				printf("%-10ld%-6dhas taken a right fork\n", get_dinner_time(philo->shared->dinner_start_time), philo->id);
 			pthread_mutex_unlock(&philo->shared->printf_mutex);
 			in_loop = 0;
 		}
@@ -57,7 +58,8 @@ void	grab_left_fork(t_philo *philo)
 			philo->shared->table_forks[fork_index] = 0;
 			philo->hold_left_fork = 1;
 			pthread_mutex_lock(&philo->shared->printf_mutex);
-			printf("%-10ld%-6dhas taken a left fork\n", get_dinner_time(philo->shared->dinner_start_time), philo->id);
+			if (philo->shared->dinner_over == 0)
+				printf("%-10ld%-6dhas taken a left fork\n", get_dinner_time(philo->shared->dinner_start_time), philo->id);
 			pthread_mutex_unlock(&philo->shared->printf_mutex);
 			in_loop = 0;
 		}
@@ -124,7 +126,8 @@ int	sleeping(t_philo *philo)
 	}
 	pthread_mutex_unlock(&philo->shared->printf_mutex);
 	pthread_mutex_lock(&philo->shared->printf_mutex);
-	printf("%-10ld%-6dis sleeping\n", get_dinner_time(philo->shared->dinner_start_time), philo->id);
+	if (philo->shared->dinner_over == 0)
+		printf("%-10ld%-6dis sleeping\n", get_dinner_time(philo->shared->dinner_start_time), philo->id);
 	pthread_mutex_unlock(&philo->shared->printf_mutex);
 	sleep_ms(philo->shared->init_time_to_sleep);
 	return (1);
@@ -140,7 +143,8 @@ int	thinking(t_philo *philo)
 	}
 	pthread_mutex_unlock(&philo->shared->printf_mutex);
 	pthread_mutex_lock(&philo->shared->printf_mutex);
-	printf("%-10ld%-6dis thinking\n", get_dinner_time(philo->shared->dinner_start_time), philo->id);
+	if (philo->shared->dinner_over == 0)
+		printf("%-10ld%-6dis thinking\n", get_dinner_time(philo->shared->dinner_start_time), philo->id);
 	pthread_mutex_unlock(&philo->shared->printf_mutex);
 	return (1);
 }
