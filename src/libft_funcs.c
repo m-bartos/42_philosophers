@@ -6,7 +6,7 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 13:19:19 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/30 09:51:27 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/31 10:45:30 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	ft_int_atoi(const char *str)
 		number = number * 10 + str[i++] - '0';
 	number = number * sign;
 	if (number <= INT_MAX && number >= 0)
-		return((long int) number);
+		return ((long int) number);
 	return (-1);
 }
 
