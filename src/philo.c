@@ -6,7 +6,7 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 13:34:59 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/31 16:57:49 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/31 17:24:58 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 void	grab_forks(t_philo *philo)
 {
 	if (philo->id % 2)
-		grab_right_fork(philo);
+		take_right_fork(philo);
 	else
-		grab_left_fork(philo);
+		take_left_fork(philo);
 	if (philo->hold_left_fork == 1)
-		grab_right_fork(philo);
+		take_right_fork(philo);
 	else if (philo->hold_right_fork == 1)
-		grab_left_fork(philo);
+		take_left_fork(philo);
 }
 
 void	*routine(void *philo_void)

@@ -6,7 +6,7 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:44:43 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/31 16:57:49 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/31 17:24:58 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,8 @@ int			have_all_eaten(t_dinner *dinner);
 void		*checking_philos(void *dinner_void);
 
 // eating.c
-void		grab_right_fork(t_philo *philo);
-void		grab_left_fork(t_philo *philo);
+void		take_right_fork(t_philo *philo);
+void		take_left_fork(t_philo *philo);
 void		put_both_forks_on_table(t_philo *philo);
 int			eating(t_philo *philo);
 
