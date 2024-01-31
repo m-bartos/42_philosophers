@@ -6,13 +6,13 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 14:59:27 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/31 10:19:46 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/31 10:39:39 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	ft_print_program_struct(t_program *program)
+void	ft_print_program_struct(t_dinner *program)
 {
 	int i;
 

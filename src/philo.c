@@ -6,13 +6,13 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 13:34:59 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/31 10:22:36 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/31 10:43:25 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	grab_right_fork(t_onephilo *philo)
+void	grab_right_fork(t_philo *philo)
 {
 	int	in_loop;
 
@@ -37,7 +37,7 @@ void	grab_right_fork(t_onephilo *philo)
 	pthread_mutex_unlock(&philo->shared->printf_mutex);
 }
 
-void	grab_left_fork(t_onephilo *philo)
+void	grab_left_fork(t_philo *philo)
 {
 	int	fork_index;
 	int	in_loop;
@@ -76,7 +76,7 @@ void	sleep_ms(long period)
 		usleep(10);
 }
 
-void	put_both_forks_on_table(t_onephilo *philo)
+void	put_both_forks_on_table(t_philo *philo)
 {
 	int	fork_index;
 
@@ -94,7 +94,7 @@ void	put_both_forks_on_table(t_onephilo *philo)
 	pthread_mutex_unlock(&philo->shared->forks_mutexes[fork_index]);
 }
 
-int	eating(t_onephilo *philo)
+int	eating(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->shared->printf_mutex);
 	if (philo->shared->dinner_over == 1)
@@ -113,7 +113,7 @@ int	eating(t_onephilo *philo)
 	return (1);
 }
 
-int	sleeping(t_onephilo *philo)
+int	sleeping(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->shared->printf_mutex);
 	if (philo->shared->dinner_over == 1)
@@ -129,7 +129,7 @@ int	sleeping(t_onephilo *philo)
 	return (1);
 }
 
-int	thinking(t_onephilo *philo)
+int	thinking(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->shared->printf_mutex);
 	if (philo->shared->dinner_over == 1)
@@ -146,9 +146,9 @@ int	thinking(t_onephilo *philo)
 
 void	*routine(void *philo_void)
 {
-	t_onephilo *philo;
+	t_philo *philo;
 
-	philo = (t_onephilo *) philo_void;
+	philo = (t_philo *) philo_void;
 
 	pthread_mutex_lock(&philo->shared->printf_mutex);
 	while (philo->shared->dinner_over == 0)
@@ -180,10 +180,10 @@ void	*routine(void *philo_void)
 
 void	*checking_philos(void *program_void)
 {
-	t_program	*program;
+	t_dinner	*program;
 	int			i;
 
-	program = (t_program *) program_void;
+	program = (t_dinner *) program_void;
 
 	i = 0;
 	while (1)
@@ -212,9 +212,9 @@ void	*checking_philos(void *program_void)
 
 int	main(int argc, char **argv)
 {
-	t_program		program;
-	t_shared_info	shared;
-	int				i;
+	t_dinner	program;
+	t_shared	shared;
+	int			i;
 
 
 	check_args(argc, argv);

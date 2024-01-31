@@ -6,7 +6,7 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:44:43 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/31 10:22:36 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/31 10:40:16 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # define INT_MAX 2147483647
 # define INT_MIN -2147483648
 
-typedef struct s_shared_info
+typedef struct s_shared_i
 {
 	int				*table_forks;
 	pthread_mutex_t	*forks_mutexes;
@@ -33,7 +33,7 @@ typedef struct s_shared_info
 	long			init_time_to_eat;
 	long			init_time_to_sleep;
 	int				dinner_over;
-}		t_shared_info;
+}		t_shared;
 
 typedef struct s_onephilo
 {
@@ -43,23 +43,23 @@ typedef struct s_onephilo
 	pthread_mutex_t	eating_start_time_mutex;
 	int				hold_left_fork;
 	int				hold_right_fork;
-	t_shared_info	*shared;
-}		t_onephilo;
+	t_shared	*shared;
+}		t_philo;
 
-typedef struct s_program
+typedef struct s_dinner
 {
-	t_onephilo		*philos_arr;
-	t_shared_info	*shared;
-	pthread_t		watch_thread;
-	int				max_eat_rounds;
-}		t_program;
+	t_philo		*philos_arr;
+	t_shared	*shared;
+	pthread_t	watch_thread;
+	int			max_eat_rounds;
+}		t_dinner;
 
 // check_args.c
 void	check_args(int argc, char **argv);
 
 // init.c
-void		free_t_program(t_program *program);
-void		init(int argc, char **argv, t_program *program, t_shared_info *mutexes);
+void		free_t_program(t_dinner *program);
+void		init(int argc, char **argv, t_dinner *program, t_shared *mutexes);
 long int	get_actual_time_ms(void);
 long int	get_dinner_time(long time);
 
@@ -68,6 +68,6 @@ int		ft_int_atoi(const char *str);
 void	ft_putstr_fd(char *s, int fd);
 
 // philo_utils.c
-void	ft_print_program_struct(t_program *program);
+void	ft_print_program_struct(t_dinner *program);
 
 #endif
