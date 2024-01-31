@@ -6,7 +6,7 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 13:34:59 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/31 14:37:42 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/31 14:38:46 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -259,7 +259,7 @@ void init_mutexes(t_dinner *dinner)
 	}
 	pthread_mutex_init(&dinner->shared->printf_mutex, NULL);
 }
-//check for how many times each philo ate (add nof_eats to t_onephilo)
+
 
 int	main(int argc, char **argv)
 {
@@ -269,10 +269,8 @@ int	main(int argc, char **argv)
 
 	check_args(argc, argv);
 	init(argc, argv, &dinner, &shared);
-	ft_print_program_struct(&dinner);
+	// ft_print_program_struct(&dinner);
 	init_mutexes(&dinner);
-	//time init
-	//shared.dinner_start_time = get_actual_time_ms(); // no need
 	i = 0;
 	while (i < dinner.shared->nof_philos)
 	{
