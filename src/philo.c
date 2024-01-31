@@ -6,7 +6,7 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 13:34:59 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/31 14:38:46 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/31 14:42:50 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,7 +245,7 @@ void	*checking_philos(void *dinner_void)
 	}
 }
 
-void init_mutexes(t_dinner *dinner)
+void	init_mutexes(t_dinner *dinner)
 {
 	int	i;
 
@@ -260,6 +260,20 @@ void init_mutexes(t_dinner *dinner)
 	pthread_mutex_init(&dinner->shared->printf_mutex, NULL);
 }
 
+void	destroy_mutexes(t_dinner *dinner)
+{
+	int	i;
+
+	i = 0;
+	while (i < dinner->shared->nof_philos)
+	{
+		pthread_mutex_destroy(&dinner->shared->forks_mutexes[i]);
+		pthread_mutex_destroy(&dinner->philos_arr[i].eating_start_time_mutex);
+		pthread_mutex_destroy(&dinner->philos_arr[i].nof_meals_mutex);
+		i++;
+	}
+	pthread_mutex_destroy(&dinner->shared->printf_mutex);
+}
 
 int	main(int argc, char **argv)
 {
@@ -280,20 +294,9 @@ int	main(int argc, char **argv)
 	pthread_create(&dinner.watch_thread, NULL, &checking_philos, &dinner);
 	i = 0;
 	while (i < dinner.shared->nof_philos)
-	{
-		pthread_join(dinner.philos_arr[i].thread, NULL);
-		i++;
-	}
+		pthread_join(dinner.philos_arr[i++].thread, NULL);
 	pthread_join(dinner.watch_thread, NULL);
-	i = 0;
-	while (i < dinner.shared->nof_philos)
-	{
-		pthread_mutex_destroy(&shared.forks_mutexes[i]);
-		pthread_mutex_destroy(&dinner.philos_arr[i].eating_start_time_mutex);
-		pthread_mutex_destroy(&dinner.philos_arr[i].nof_meals_mutex);
-		i++;
-	}
-	pthread_mutex_destroy(&dinner.shared->printf_mutex);
+	destroy_mutexes(&dinner);
 	free_t_program(&dinner);
 	return (0);
 }
