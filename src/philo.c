@@ -6,7 +6,7 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 13:34:59 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/31 10:03:09 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/31 10:20:52 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,20 +18,20 @@ void	grab_right_fork(t_onephilo *philo)
 
 	in_loop = 1;
 	pthread_mutex_lock(&philo->shared->printf_mutex);
-	while(in_loop == 1 && philo->shared->game_over == 0)
+	while(in_loop == 1 && philo->shared->dinner_over == 0)
 	{
 		pthread_mutex_unlock(&philo->shared->printf_mutex);
-		pthread_mutex_lock(&philo->shared->forks_mutex[philo->id]);
+		pthread_mutex_lock(&philo->shared->forks_mutexes[philo->id]);
 		if (philo->shared->table_forks[philo->id] == 1)
 		{
 			philo->shared->table_forks[philo->id] = 0;
 			philo->hold_right_fork = 1;
 			pthread_mutex_lock(&philo->shared->printf_mutex);
-			printf("%ld     %d   has taken a right fork\n", get_party_time(philo->shared->time), philo->id);
+			printf("%ld     %d   has taken a right fork\n", get_party_time(philo->shared->dinner_start_time), philo->id);
 			pthread_mutex_unlock(&philo->shared->printf_mutex);
 			in_loop = 0;
 		}
-		pthread_mutex_unlock(&philo->shared->forks_mutex[philo->id]);
+		pthread_mutex_unlock(&philo->shared->forks_mutexes[philo->id]);
 		pthread_mutex_lock(&philo->shared->printf_mutex);
 	}
 	pthread_mutex_unlock(&philo->shared->printf_mutex);
@@ -48,20 +48,20 @@ void	grab_left_fork(t_onephilo *philo)
 		fork_index = philo->id + 1;
 	in_loop = 1;
 	pthread_mutex_lock(&philo->shared->printf_mutex);
-	while(in_loop == 1 && philo->shared->game_over == 0)
+	while(in_loop == 1 && philo->shared->dinner_over == 0)
 	{
 		pthread_mutex_unlock(&philo->shared->printf_mutex);
-		pthread_mutex_lock(&philo->shared->forks_mutex[fork_index]);
+		pthread_mutex_lock(&philo->shared->forks_mutexes[fork_index]);
 		if (philo->shared->table_forks[fork_index] == 1)
 		{
 			philo->shared->table_forks[fork_index] = 0;
 			philo->hold_left_fork = 1;
 			pthread_mutex_lock(&philo->shared->printf_mutex);
-			printf("%ld     %d   has taken a left fork\n", get_party_time(philo->shared->time), philo->id);
+			printf("%ld     %d   has taken a left fork\n", get_party_time(philo->shared->dinner_start_time), philo->id);
 			pthread_mutex_unlock(&philo->shared->printf_mutex);
 			in_loop = 0;
 		}
-		pthread_mutex_unlock(&philo->shared->forks_mutex[fork_index]);
+		pthread_mutex_unlock(&philo->shared->forks_mutexes[fork_index]);
 		pthread_mutex_lock(&philo->shared->printf_mutex);
 	}
 	pthread_mutex_unlock(&philo->shared->printf_mutex);
@@ -74,42 +74,41 @@ void	sleep_ms(long period)
 	init_time = get_actual_time_ms();
 	while ((get_actual_time_ms() - init_time) < period)
 		usleep(10);
-
 }
 
 void	put_both_forks_on_table(t_onephilo *philo)
 {
 	int	fork_index;
 
-	pthread_mutex_lock(&philo->shared->forks_mutex[philo->id]);
+	pthread_mutex_lock(&philo->shared->forks_mutexes[philo->id]);
 	philo->hold_right_fork = 0;
 	philo->shared->table_forks[philo->id] = 1;
-	pthread_mutex_unlock(&philo->shared->forks_mutex[philo->id]);
+	pthread_mutex_unlock(&philo->shared->forks_mutexes[philo->id]);
 	if (philo->id == (philo->shared->nof_philos - 1))
 		fork_index = 0;
 	else
 		fork_index = philo->id + 1;
-	pthread_mutex_lock(&philo->shared->forks_mutex[fork_index]);
+	pthread_mutex_lock(&philo->shared->forks_mutexes[fork_index]);
 	philo->hold_left_fork = 0;
 	philo->shared->table_forks[fork_index] = 1;
-	pthread_mutex_unlock(&philo->shared->forks_mutex[fork_index]);
+	pthread_mutex_unlock(&philo->shared->forks_mutexes[fork_index]);
 }
 
 int	eating(t_onephilo *philo)
 {
 	pthread_mutex_lock(&philo->shared->printf_mutex);
-	if (philo->shared->game_over == 1)
+	if (philo->shared->dinner_over == 1)
 	{
 		pthread_mutex_unlock(&philo->shared->printf_mutex);
 		return (0);
 	}
 	pthread_mutex_unlock(&philo->shared->printf_mutex);
 	pthread_mutex_lock(&philo->shared->printf_mutex);
-	printf("%ld     %d   is eating\n", get_party_time(philo->shared->time), philo->id);
+	printf("%ld     %d   is eating\n", get_party_time(philo->shared->dinner_start_time), philo->id);
 	pthread_mutex_unlock(&philo->shared->printf_mutex);
-	pthread_mutex_lock(&philo->start_of_eating_mutex);
-	philo->start_of_eating = get_actual_time_ms();
-	pthread_mutex_unlock(&philo->start_of_eating_mutex);
+	pthread_mutex_lock(&philo->eating_start_time_mutex);
+	philo->eating_start_time = get_actual_time_ms();
+	pthread_mutex_unlock(&philo->eating_start_time_mutex);
 	sleep_ms(philo->shared->init_time_to_eat);
 	return (1);
 }
@@ -117,14 +116,14 @@ int	eating(t_onephilo *philo)
 int	sleeping(t_onephilo *philo)
 {
 	pthread_mutex_lock(&philo->shared->printf_mutex);
-	if (philo->shared->game_over == 1)
+	if (philo->shared->dinner_over == 1)
 	{
 		pthread_mutex_unlock(&philo->shared->printf_mutex);
 		return (0);
 	}
 	pthread_mutex_unlock(&philo->shared->printf_mutex);
 	pthread_mutex_lock(&philo->shared->printf_mutex);
-	printf("%ld     %d   is sleeping\n", get_party_time(philo->shared->time), philo->id);
+	printf("%ld     %d   is sleeping\n", get_party_time(philo->shared->dinner_start_time), philo->id);
 	pthread_mutex_unlock(&philo->shared->printf_mutex);
 	sleep_ms(philo->shared->init_time_to_sleep);
 	return (1);
@@ -133,14 +132,14 @@ int	sleeping(t_onephilo *philo)
 int	thinking(t_onephilo *philo)
 {
 	pthread_mutex_lock(&philo->shared->printf_mutex);
-	if (philo->shared->game_over == 1)
+	if (philo->shared->dinner_over == 1)
 	{
 		pthread_mutex_unlock(&philo->shared->printf_mutex);
 		return (0);
 	}
 	pthread_mutex_unlock(&philo->shared->printf_mutex);
 	pthread_mutex_lock(&philo->shared->printf_mutex);
-	printf("%ld     %d   is thinking\n", get_party_time(philo->shared->time), philo->id);
+	printf("%ld     %d   is thinking\n", get_party_time(philo->shared->dinner_start_time), philo->id);
 	pthread_mutex_unlock(&philo->shared->printf_mutex);
 	return (1);
 }
@@ -152,7 +151,7 @@ void	*routine(void *philo_void)
 	philo = (t_onephilo *) philo_void;
 
 	pthread_mutex_lock(&philo->shared->printf_mutex);
-	while (philo->shared->game_over == 0)
+	while (philo->shared->dinner_over == 0)
 	{
 		pthread_mutex_unlock(&philo->shared->printf_mutex);
 		if (philo->id % 2)
@@ -191,17 +190,17 @@ void	*checking_philos(void *program_void)
 	{
 		while (i < program->shared->nof_philos)
 		{
-			pthread_mutex_lock(&program->philos_arr[i].start_of_eating_mutex);
-			if (get_actual_time_ms() - program->philos_arr[i].start_of_eating > program->shared->init_time_to_die)
+			pthread_mutex_lock(&program->philos_arr[i].eating_start_time_mutex);
+			if (get_actual_time_ms() - program->philos_arr[i].eating_start_time > program->shared->init_time_to_die)
 			{
 					pthread_mutex_lock(&program->shared->printf_mutex);
-					printf("%ld     %d    is dead\n", get_party_time(program->shared->time), program->philos_arr[i].id);
-					program->shared->game_over = 1;
+					printf("%ld     %d    is dead\n", get_party_time(program->shared->dinner_start_time), program->philos_arr[i].id);
+					program->shared->dinner_over = 1;
 					pthread_mutex_unlock(&program->shared->printf_mutex);
-					pthread_mutex_unlock(&program->philos_arr[i].start_of_eating_mutex);
+					pthread_mutex_unlock(&program->philos_arr[i].eating_start_time_mutex);
 					return (NULL);
 			}
-			pthread_mutex_unlock(&program->philos_arr[i].start_of_eating_mutex);
+			pthread_mutex_unlock(&program->philos_arr[i].eating_start_time_mutex);
 			i++;
 		}
 		i = 0;
@@ -228,13 +227,13 @@ int	main(int argc, char **argv)
 	i = 0;
 	while (i < shared.nof_philos)
 	{
-		pthread_mutex_init(&shared.forks_mutex[i], NULL);
-		pthread_mutex_init(&program.philos_arr[i].start_of_eating_mutex, NULL);
+		pthread_mutex_init(&shared.forks_mutexes[i], NULL);
+		pthread_mutex_init(&program.philos_arr[i].eating_start_time_mutex, NULL);
 		i++;
 	}
 	pthread_mutex_init(&program.shared->printf_mutex, NULL);
 	//time init
-	shared.time = get_actual_time_ms(); // no need
+	shared.dinner_start_time = get_actual_time_ms(); // no need
 	i = 0;
 	while (i < shared.nof_philos)
 	{
@@ -252,8 +251,8 @@ int	main(int argc, char **argv)
 	i = 0;
 	while (i < shared.nof_philos)
 	{
-		pthread_mutex_destroy(&shared.forks_mutex[i]);
-		pthread_mutex_destroy(&program.philos_arr[i].start_of_eating_mutex);
+		pthread_mutex_destroy(&shared.forks_mutexes[i]);
+		pthread_mutex_destroy(&program.philos_arr[i].eating_start_time_mutex);
 		i++;
 	}
 	pthread_mutex_destroy(&program.shared->printf_mutex);

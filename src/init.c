@@ -6,7 +6,7 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 10:22:14 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/30 13:08:00 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/31 10:20:43 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ long int	get_party_time(long time)
 void	free_t_program(t_program *program)
 {
 	free(program->philos_arr);
-	free(program->shared->forks_mutex);
+	free(program->shared->forks_mutexes);
 	free(program->shared->table_forks);
 }
 
@@ -43,7 +43,7 @@ void	init_one_philo(t_onephilo *philo, t_shared_info *shared, int id)
 	// philo->time_to_die = shared->init_time_to_die;
 	// philo->time_to_eat = shared->init_time_to_eat;
 	// philo->time_to_sleep = shared->init_time_to_sleep;
-	philo->start_of_eating = get_actual_time_ms();
+	philo->eating_start_time = get_actual_time_ms();
 	philo->hold_left_fork = 0;
 	philo->hold_right_fork = 0;
 	philo->shared = shared;
@@ -69,13 +69,13 @@ void	init_fill_t_program(char **argv, t_program *program, t_shared_info *shared)
 {
 	program->shared = shared;
 	program->shared->table_forks = NULL;
-	program->shared->forks_mutex = NULL;
-	shared->time = get_actual_time_ms();
+	program->shared->forks_mutexes = NULL;
+	shared->dinner_start_time = get_actual_time_ms();
 	program->shared->nof_philos = ft_int_atoi(argv[1]);
 	shared->init_time_to_die = ft_int_atoi(argv[2]);
 	shared->init_time_to_eat = ft_int_atoi(argv[3]);
 	shared->init_time_to_sleep = ft_int_atoi(argv[4]);
-	shared->game_over = 0;
+	shared->dinner_over = 0;
 	program->philos_arr = NULL;
 	program->max_eat_rounds = -1;
 
@@ -90,8 +90,8 @@ int	init_mallocs_in_t_shared(t_shared_info *shared)
 {
 	int i;
 
-	shared->forks_mutex = (pthread_mutex_t *) malloc (sizeof(pthread_mutex_t) * shared->nof_philos);
-	if (shared->forks_mutex == NULL)
+	shared->forks_mutexes = (pthread_mutex_t *) malloc (sizeof(pthread_mutex_t) * shared->nof_philos);
+	if (shared->forks_mutexes == NULL)
 		return (0);
 	shared->table_forks= (int *) malloc (sizeof(int) * shared->nof_philos);
 	if (shared->table_forks == NULL)

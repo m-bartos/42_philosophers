@@ -6,7 +6,7 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:44:43 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/31 10:02:41 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/31 10:20:52 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,22 +25,22 @@
 typedef struct s_shared_info
 {
 	int				*table_forks;
-	pthread_mutex_t	*forks_mutex;
+	pthread_mutex_t	*forks_mutexes;
 	pthread_mutex_t	printf_mutex;
-	long			time;
+	long			dinner_start_time;
 	int				nof_philos;
 	long			init_time_to_die;
 	long			init_time_to_eat;
 	long			init_time_to_sleep;
-	int				game_over;
+	int				dinner_over;
 }		t_shared_info;
 
 typedef struct s_onephilo
 {
 	int				id;
 	pthread_t		thread;
-	long			start_of_eating;
-	pthread_mutex_t	start_of_eating_mutex;
+	long			eating_start_time;
+	pthread_mutex_t	eating_start_time_mutex;
 	int				hold_left_fork;
 	int				hold_right_fork;
 	t_shared_info	*shared;
