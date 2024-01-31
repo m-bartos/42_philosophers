@@ -6,7 +6,7 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 13:34:59 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/31 10:43:25 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/31 10:51:50 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	grab_right_fork(t_philo *philo)
 
 	in_loop = 1;
 	pthread_mutex_lock(&philo->shared->printf_mutex);
-	while(in_loop == 1 && philo->shared->dinner_over == 0)
+	while (in_loop == 1 && philo->shared->dinner_over == 0)
 	{
 		pthread_mutex_unlock(&philo->shared->printf_mutex);
 		pthread_mutex_lock(&philo->shared->forks_mutexes[philo->id]);
@@ -48,7 +48,7 @@ void	grab_left_fork(t_philo *philo)
 		fork_index = philo->id + 1;
 	in_loop = 1;
 	pthread_mutex_lock(&philo->shared->printf_mutex);
-	while(in_loop == 1 && philo->shared->dinner_over == 0)
+	while (in_loop == 1 && philo->shared->dinner_over == 0)
 	{
 		pthread_mutex_unlock(&philo->shared->printf_mutex);
 		pthread_mutex_lock(&philo->shared->forks_mutexes[fork_index]);
@@ -102,8 +102,6 @@ int	eating(t_philo *philo)
 		pthread_mutex_unlock(&philo->shared->printf_mutex);
 		return (0);
 	}
-	pthread_mutex_unlock(&philo->shared->printf_mutex);
-	pthread_mutex_lock(&philo->shared->printf_mutex);
 	printf("%ld     %d   is eating\n", get_dinner_time(philo->shared->dinner_start_time), philo->id);
 	pthread_mutex_unlock(&philo->shared->printf_mutex);
 	pthread_mutex_lock(&philo->eating_start_time_mutex);
@@ -146,10 +144,9 @@ int	thinking(t_philo *philo)
 
 void	*routine(void *philo_void)
 {
-	t_philo *philo;
+	t_philo	*philo;
 
 	philo = (t_philo *) philo_void;
-
 	pthread_mutex_lock(&philo->shared->printf_mutex);
 	while (philo->shared->dinner_over == 0)
 	{
