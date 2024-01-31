@@ -6,7 +6,7 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 13:34:59 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/31 14:07:22 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/31 14:31:50 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,34 +119,34 @@ int	eating(t_philo *philo)
 int	sleeping(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->shared->printf_mutex);
-	if (philo->shared->dinner_over == 1)
+	if (philo->shared->dinner_over == 0)
+	{
+		printf("%-10ld%-6dis sleeping\n", get_dinner_time(philo->shared->dinner_start_time), philo->id);
+		pthread_mutex_unlock(&philo->shared->printf_mutex);
+		sleep_ms(philo->shared->init_time_to_sleep);
+		return (1);
+	}
+	else
 	{
 		pthread_mutex_unlock(&philo->shared->printf_mutex);
 		return (0);
 	}
-	pthread_mutex_unlock(&philo->shared->printf_mutex);
-	pthread_mutex_lock(&philo->shared->printf_mutex);
-	if (philo->shared->dinner_over == 0)
-		printf("%-10ld%-6dis sleeping\n", get_dinner_time(philo->shared->dinner_start_time), philo->id);
-	pthread_mutex_unlock(&philo->shared->printf_mutex);
-	sleep_ms(philo->shared->init_time_to_sleep);
-	return (1);
 }
 
 int	thinking(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->shared->printf_mutex);
-	if (philo->shared->dinner_over == 1)
+	if (philo->shared->dinner_over == 0)
+	{
+		printf("%-10ld%-6dis thinking\n", get_dinner_time(philo->shared->dinner_start_time), philo->id);
+		pthread_mutex_unlock(&philo->shared->printf_mutex);
+		return (1);
+	}
+	else
 	{
 		pthread_mutex_unlock(&philo->shared->printf_mutex);
 		return (0);
 	}
-	pthread_mutex_unlock(&philo->shared->printf_mutex);
-	pthread_mutex_lock(&philo->shared->printf_mutex);
-	if (philo->shared->dinner_over == 0)
-		printf("%-10ld%-6dis thinking\n", get_dinner_time(philo->shared->dinner_start_time), philo->id);
-	pthread_mutex_unlock(&philo->shared->printf_mutex);
-	return (1);
 }
 
 void	*routine(void *philo_void)
@@ -226,7 +226,6 @@ int	all_have_eaten(t_dinner *dinner)
 	dinner->shared->dinner_over = 1;
 	pthread_mutex_unlock(&dinner->shared->printf_mutex);
 	return (1);
-
 }
 
 void	*checking_philos(void *dinner_void)
@@ -250,50 +249,52 @@ void	*checking_philos(void *dinner_void)
 
 int	main(int argc, char **argv)
 {
-	t_dinner	program;
+	t_dinner	dinner;
 	t_shared	shared;
 	int			i;
 
 
 	check_args(argc, argv);
-	init(argc, argv, &program, &shared);
+	init(argc, argv, &dinner, &shared);
 
 	//printing struct for check
-	ft_print_program_struct(&program);
+	ft_print_program_struct(&dinner);
 
 	// playing with threads
 	i = 0;
 	while (i < shared.nof_philos)
 	{
 		pthread_mutex_init(&shared.forks_mutexes[i], NULL);
-		pthread_mutex_init(&program.philos_arr[i].eating_start_time_mutex, NULL);
+		pthread_mutex_init(&dinner.philos_arr[i].eating_start_time_mutex, NULL);
+		pthread_mutex_init(&dinner.philos_arr[i].nof_meals_mutex, NULL);
 		i++;
 	}
-	pthread_mutex_init(&program.shared->printf_mutex, NULL);
+	pthread_mutex_init(&dinner.shared->printf_mutex, NULL);
 	//time init
 	shared.dinner_start_time = get_actual_time_ms(); // no need
 	i = 0;
 	while (i < shared.nof_philos)
 	{
-		pthread_create(&program.philos_arr[i].thread, NULL, &routine, &program.philos_arr[i]);
+		pthread_create(&dinner.philos_arr[i].thread, NULL, &routine, &dinner.philos_arr[i]);
 		i++;
 	}
-	pthread_create(&program.watch_thread, NULL, &checking_philos, &program);
+	pthread_create(&dinner.watch_thread, NULL, &checking_philos, &dinner);
 	i = 0;
 	while (i < shared.nof_philos)
 	{
-		pthread_join(program.philos_arr[i].thread, NULL);
+		pthread_join(dinner.philos_arr[i].thread, NULL);
 		i++;
 	}
-	pthread_join(program.watch_thread, NULL);
+	pthread_join(dinner.watch_thread, NULL);
 	i = 0;
 	while (i < shared.nof_philos)
 	{
 		pthread_mutex_destroy(&shared.forks_mutexes[i]);
-		pthread_mutex_destroy(&program.philos_arr[i].eating_start_time_mutex);
+		pthread_mutex_destroy(&dinner.philos_arr[i].eating_start_time_mutex);
+		pthread_mutex_destroy(&dinner.philos_arr[i].nof_meals_mutex);
 		i++;
 	}
-	pthread_mutex_destroy(&program.shared->printf_mutex);
-	free_t_program(&program);
+	pthread_mutex_destroy(&dinner.shared->printf_mutex);
+	free_t_program(&dinner);
 	return (0);
 }
