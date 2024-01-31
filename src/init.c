@@ -6,7 +6,7 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 10:22:14 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/31 10:22:36 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/31 10:32:21 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,6 @@ void	free_t_program(t_program *program)
 void	init_one_philo(t_onephilo *philo, t_shared_info *shared, int id)
 {
 	philo->id = id;
-	// philo->time_to_die = shared->init_time_to_die;
-	// philo->time_to_eat = shared->init_time_to_eat;
-	// philo->time_to_sleep = shared->init_time_to_sleep;
 	philo->eating_start_time = get_actual_time_ms();
 	philo->hold_left_fork = 0;
 	philo->hold_right_fork = 0;
@@ -105,25 +102,20 @@ int	init_mallocs_in_t_shared(t_shared_info *shared)
 	return (1);
 }
 
-int	init_t_program(int argc, char **argv, t_program *program, t_shared_info *shared)
+void	init(int argc, char **argv, t_program *program, t_shared_info *shared)
 {
 
 	init_fill_t_program(argv, program, shared);
 	if (!init_mallocs_in_t_shared(shared))
-		return (0);
-	if (!init_mallocs_in_philos_arr(program, shared))
-		return (0);
-	if (argc == 6)
-		add_max_eat_rounds(argv[5], program);
-	return (1);
-}
-
-void	init(int argc, char **argv, t_program *program, t_shared_info *shared)
-{
-	//init t_program struct with argvs
-	if (init_t_program(argc, argv, program, shared) == 0)
 	{
 		free_t_program(program);
-		exit(22);
+		exit (21);
 	}
+	if (!init_mallocs_in_philos_arr(program, shared))
+	{
+		free_t_program(program);
+		exit (22);
+	}
+	if (argc == 6)
+		add_max_eat_rounds(argv[5], program);
 }
