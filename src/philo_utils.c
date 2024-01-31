@@ -6,7 +6,7 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 14:59:27 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/31 10:39:39 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/31 16:11:45 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ft_print_program_struct(t_dinner *program)
 {
-	int i;
+	int	i;
 
 	printf("========= PROGRAM STRUCT =========\n");
 	printf("Init time to die: %ld\n", program->shared->init_time_to_die);
@@ -24,7 +24,6 @@ void	ft_print_program_struct(t_dinner *program)
 	printf("Start time: %ld\n", program->shared->dinner_start_time);
 	printf("MAX EAT ROUNDS: %d\n", program->max_eat_rounds);
 	printf("\n");
-
 	i = 0;
 	while (i < program->shared->nof_philos)
 	{

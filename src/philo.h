@@ -6,7 +6,7 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:44:43 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/31 14:54:04 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/31 16:12:50 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void		check_args(int argc, char **argv);
 
 // checker_thread.c
 int			are_philos_dead(t_dinner *dinner);
-int			all_have_eaten(t_dinner *dinner);
+int			have_all_eaten(t_dinner *dinner);
 void		*checking_philos(void *dinner_void);
 
 // eating.c
@@ -69,6 +69,11 @@ void		grab_right_fork(t_philo *philo);
 void		grab_left_fork(t_philo *philo);
 void		put_both_forks_on_table(t_philo *philo);
 int			eating(t_philo *philo);
+
+// init_utils.c
+void		free_t_program(t_dinner *program);
+void		init_one_philo(t_philo *philo, t_shared *shared, int id);
+void		add_max_eat_rounds(char	*str_max_eat_rounds, t_dinner *program);
 
 // init.c
 void		free_t_program(t_dinner *program);
@@ -87,7 +92,9 @@ void		ft_print_program_struct(t_dinner *program);
 void		init_mutexes(t_dinner *dinner);
 void		destroy_mutexes(t_dinner *dinner);
 
-// philo.c
+// time.c
 void		sleep_ms(long period);
+long int	get_actual_time(void);
+long int	get_dinner_time(long time);
 
 #endif

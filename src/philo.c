@@ -6,20 +6,11 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 13:34:59 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/31 14:54:04 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/31 16:07:10 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-void	sleep_ms(long period)
-{
-	long	init_time;
-
-	init_time = get_actual_time();
-	while ((get_actual_time() - init_time) < period)
-		usleep(10);
-}
 
 int	sleeping(t_philo *philo)
 {

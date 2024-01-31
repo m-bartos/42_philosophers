@@ -6,46 +6,11 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 10:22:14 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/31 14:54:04 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/31 16:10:07 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-long int	get_actual_time(void)
-{
-	struct timeval	time;
-	long			time_in_ms;
-
-	gettimeofday(&time, NULL);
-	time_in_ms = (long)(time.tv_sec * 1000 + time.tv_usec / 1000);
-	return (time_in_ms);
-}
-
-long int	get_dinner_time(long time)
-{
-	long	party_time;
-
-	party_time = (get_actual_time() - time);
-	return (party_time);
-}
-
-void	free_t_program(t_dinner *program)
-{
-	free(program->philos_arr);
-	free(program->shared->forks_mutexes);
-	free(program->shared->table_forks);
-}
-
-void	init_one_philo(t_philo *philo, t_shared *shared, int id)
-{
-	philo->id = id;
-	philo->eating_start_time = get_actual_time();
-	philo->hold_left_fork = 0;
-	philo->hold_right_fork = 0;
-	philo->nof_meals = 0;
-	philo->shared = shared;
-}
 
 int	init_mallocs_in_philos_arr(t_dinner *program)
 {
@@ -78,11 +43,6 @@ void	init_fill_t_program(char **argv, t_dinner *dinner, t_shared *shared)
 	shared->dinner_over = 0;
 	dinner->philos_arr = NULL;
 	dinner->max_eat_rounds = -1;
-}
-
-void	add_max_eat_rounds(char	*str_max_eat_rounds, t_dinner *program)
-{
-	program->max_eat_rounds = ft_int_atoi(str_max_eat_rounds);
 }
 
 int	init_mallocs_in_t_shared(t_shared *shared)

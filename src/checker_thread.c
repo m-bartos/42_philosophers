@@ -6,7 +6,7 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 14:44:37 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/31 14:54:04 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/31 16:12:50 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	are_philos_dead(t_dinner *dinner)
 	return (0);
 }
 
-int	all_have_eaten(t_dinner *dinner)
+int	have_all_eaten(t_dinner *dinner)
 {
 	int	i;
 
@@ -69,7 +69,7 @@ void	*checking_philos(void *dinner_void)
 			return (NULL);
 		if (dinner->max_eat_rounds != -1)
 		{
-			if (all_have_eaten(dinner) == 1)
+			if (have_all_eaten(dinner) == 1)
 				return (NULL);
 		}
 	}
