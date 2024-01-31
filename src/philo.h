@@ -6,7 +6,7 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:44:43 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/31 10:48:48 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/31 11:32:29 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ typedef struct s_philo
 	pthread_mutex_t	eating_start_time_mutex;
 	int				hold_left_fork;
 	int				hold_right_fork;
+	int				nof_meals;
+	pthread_mutex_t	nof_meals_mutex;
 	t_shared		*shared;
 }		t_philo;
 
