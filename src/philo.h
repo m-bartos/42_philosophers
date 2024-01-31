@@ -6,7 +6,7 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:44:43 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/30 13:07:23 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/31 10:02:41 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,6 @@ typedef struct s_onephilo
 	pthread_t		thread;
 	long			start_of_eating;
 	pthread_mutex_t	start_of_eating_mutex;
-	// int				time_to_die;
-	// int				time_to_eat;
-	// int				time_to_sleep;
 	int				hold_left_fork;
 	int				hold_right_fork;
 	t_shared_info	*shared;
