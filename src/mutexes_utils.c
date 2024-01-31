@@ -6,7 +6,7 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 14:50:20 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/31 14:51:02 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/31 16:57:16 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@ void	init_mutexes(t_dinner *dinner)
 	i = 0;
 	while (i < dinner->shared->nof_philos)
 	{
-		pthread_mutex_init(&dinner->shared->forks_mutexes[i], NULL);
-		pthread_mutex_init(&dinner->philos_arr[i].eating_start_time_mutex, NULL);
-		pthread_mutex_init(&dinner->philos_arr[i].nof_meals_mutex, NULL);
+		pthread_mutex_init(&dinner->shared->forks_mtxs[i], NULL);
+		pthread_mutex_init(&dinner->philos[i].eating_start_time_mtx, NULL);
+		pthread_mutex_init(&dinner->philos[i].nof_meals_mtx, NULL);
 		i++;
 	}
-	pthread_mutex_init(&dinner->shared->printf_mutex, NULL);
+	pthread_mutex_init(&dinner->shared->printf_mtx, NULL);
 }
 
 void	destroy_mutexes(t_dinner *dinner)
@@ -34,10 +34,10 @@ void	destroy_mutexes(t_dinner *dinner)
 	i = 0;
 	while (i < dinner->shared->nof_philos)
 	{
-		pthread_mutex_destroy(&dinner->shared->forks_mutexes[i]);
-		pthread_mutex_destroy(&dinner->philos_arr[i].eating_start_time_mutex);
-		pthread_mutex_destroy(&dinner->philos_arr[i].nof_meals_mutex);
+		pthread_mutex_destroy(&dinner->shared->forks_mtxs[i]);
+		pthread_mutex_destroy(&dinner->philos[i].eating_start_time_mtx);
+		pthread_mutex_destroy(&dinner->philos[i].nof_meals_mtx);
 		i++;
 	}
-	pthread_mutex_destroy(&dinner->shared->printf_mutex);
+	pthread_mutex_destroy(&dinner->shared->printf_mtx);
 }
