@@ -6,7 +6,7 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:44:43 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/31 10:46:17 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/31 10:48:48 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ typedef struct s_philo
 	pthread_mutex_t	eating_start_time_mutex;
 	int				hold_left_fork;
 	int				hold_right_fork;
-	t_shared	*shared;
+	t_shared		*shared;
 }		t_philo;
 
 typedef struct s_dinner
@@ -55,7 +55,7 @@ typedef struct s_dinner
 }		t_dinner;
 
 // check_args.c
-void	check_args(int argc, char **argv);
+void		check_args(int argc, char **argv);
 
 // init.c
 void		free_t_program(t_dinner *program);
@@ -64,10 +64,10 @@ long int	get_actual_time_ms(void);
 long int	get_dinner_time(long time);
 
 // libft_funcs.c
-int		ft_int_atoi(const char *str);
-void	ft_putstr_fd(char *s, int fd);
+int			ft_int_atoi(const char *str);
+void		ft_putstr_fd(char *s, int fd);
 
 // philo_utils.c
-void	ft_print_program_struct(t_dinner *program);
+void		ft_print_program_struct(t_dinner *program);
 
 #endif
