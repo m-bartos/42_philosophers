@@ -6,7 +6,7 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 13:34:59 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/31 14:35:07 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/31 14:37:42 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,6 +245,20 @@ void	*checking_philos(void *dinner_void)
 	}
 }
 
+void init_mutexes(t_dinner *dinner)
+{
+	int	i;
+
+	i = 0;
+	while (i < dinner->shared->nof_philos)
+	{
+		pthread_mutex_init(&dinner->shared->forks_mutexes[i], NULL);
+		pthread_mutex_init(&dinner->philos_arr[i].eating_start_time_mutex, NULL);
+		pthread_mutex_init(&dinner->philos_arr[i].nof_meals_mutex, NULL);
+		i++;
+	}
+	pthread_mutex_init(&dinner->shared->printf_mutex, NULL);
+}
 //check for how many times each philo ate (add nof_eats to t_onephilo)
 
 int	main(int argc, char **argv)
@@ -253,23 +267,10 @@ int	main(int argc, char **argv)
 	t_shared	shared;
 	int			i;
 
-
 	check_args(argc, argv);
 	init(argc, argv, &dinner, &shared);
-
-	//printing struct for check
 	ft_print_program_struct(&dinner);
-
-	// playing with threads
-	i = 0;
-	while (i < dinner.shared->nof_philos)
-	{
-		pthread_mutex_init(&dinner.shared->forks_mutexes[i], NULL);
-		pthread_mutex_init(&dinner.philos_arr[i].eating_start_time_mutex, NULL);
-		pthread_mutex_init(&dinner.philos_arr[i].nof_meals_mutex, NULL);
-		i++;
-	}
-	pthread_mutex_init(&dinner.shared->printf_mutex, NULL);
+	init_mutexes(&dinner);
 	//time init
 	//shared.dinner_start_time = get_actual_time_ms(); // no need
 	i = 0;
