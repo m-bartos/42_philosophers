@@ -6,7 +6,7 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:44:43 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/31 11:32:29 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/31 14:54:04 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,17 +52,28 @@ typedef struct s_dinner
 {
 	t_philo		*philos_arr;
 	t_shared	*shared;
-	pthread_t	watch_thread;
+	pthread_t	checker_thread;
 	int			max_eat_rounds;
 }		t_dinner;
 
 // check_args.c
 void		check_args(int argc, char **argv);
 
+// checker_thread.c
+int			are_philos_dead(t_dinner *dinner);
+int			all_have_eaten(t_dinner *dinner);
+void		*checking_philos(void *dinner_void);
+
+// eating.c
+void		grab_right_fork(t_philo *philo);
+void		grab_left_fork(t_philo *philo);
+void		put_both_forks_on_table(t_philo *philo);
+int			eating(t_philo *philo);
+
 // init.c
 void		free_t_program(t_dinner *program);
 void		init(int argc, char **argv, t_dinner *program, t_shared *mutexes);
-long int	get_actual_time_ms(void);
+long int	get_actual_time(void);
 long int	get_dinner_time(long time);
 
 // libft_funcs.c
@@ -71,5 +82,12 @@ void		ft_putstr_fd(char *s, int fd);
 
 // philo_utils.c
 void		ft_print_program_struct(t_dinner *program);
+
+// mutexes_utils.c
+void		init_mutexes(t_dinner *dinner);
+void		destroy_mutexes(t_dinner *dinner);
+
+// philo.c
+void		sleep_ms(long period);
 
 #endif
