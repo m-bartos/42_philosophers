@@ -6,7 +6,7 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 13:34:59 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/30 14:29:57 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/31 10:03:09 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,29 +179,6 @@ void	*routine(void *philo_void)
 	return (NULL);
 }
 
-// void	exit_all(t_program *program)
-// {
-// 	int	i;
-	
-// 	i = 0;
-// 	while (i < program->shared->nof_philos)
-// 	{
-// 		pthread_join(program->philos_arr[i].thread, NULL);
-// 		i++;
-// 	}
-// 	pthread_join(program->watch_thread, NULL);
-// 	i = 0;
-// 	while (i < program->shared->nof_philos)
-// 	{
-// 		pthread_mutex_destroy(&program->shared->forks_mutex[i]);
-// 		pthread_mutex_destroy(&program->philos_arr[i].start_of_eating_mutex);
-// 		i++;
-// 	}
-// 	pthread_mutex_destroy(&program->shared->printf_mutex);
-// 	free_t_program(program);
-// 	exit(999);
-// }
-
 void	*checking_philos(void *program_void)
 {
 	t_program	*program;
@@ -222,7 +199,7 @@ void	*checking_philos(void *program_void)
 					program->shared->game_over = 1;
 					pthread_mutex_unlock(&program->shared->printf_mutex);
 					pthread_mutex_unlock(&program->philos_arr[i].start_of_eating_mutex);
-					return (NULL);// needs to be done properly
+					return (NULL);
 			}
 			pthread_mutex_unlock(&program->philos_arr[i].start_of_eating_mutex);
 			i++;
