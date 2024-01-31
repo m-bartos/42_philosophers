@@ -6,7 +6,7 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:44:43 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/31 10:40:16 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/31 10:46:17 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # define INT_MAX 2147483647
 # define INT_MIN -2147483648
 
-typedef struct s_shared_i
+typedef struct s_shared
 {
 	int				*table_forks;
 	pthread_mutex_t	*forks_mutexes;
@@ -35,7 +35,7 @@ typedef struct s_shared_i
 	int				dinner_over;
 }		t_shared;
 
-typedef struct s_onephilo
+typedef struct s_philo
 {
 	int				id;
 	pthread_t		thread;
