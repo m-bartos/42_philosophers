@@ -6,7 +6,7 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 10:22:14 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/31 16:10:07 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/31 16:23:02 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	init_fill_t_program(char **argv, t_dinner *dinner, t_shared *shared)
 	dinner->shared = shared;
 	dinner->shared->table_forks = NULL;
 	dinner->shared->forks_mutexes = NULL;
-	shared->dinner_start_time = get_actual_time();
+	shared->dinner_start_time = 0;
 	dinner->shared->nof_philos = ft_int_atoi(argv[1]);
 	shared->init_time_to_die = ft_int_atoi(argv[2]);
 	shared->init_time_to_eat = ft_int_atoi(argv[3]);

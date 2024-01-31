@@ -6,44 +6,11 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 13:34:59 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/31 16:07:10 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/31 16:24:41 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-int	sleeping(t_philo *philo)
-{
-	pthread_mutex_lock(&philo->shared->printf_mutex);
-	if (philo->shared->dinner_over == 0)
-	{
-		printf("%-10ld%-6dis sleeping\n", get_dinner_time(philo->shared->dinner_start_time), philo->id);
-		pthread_mutex_unlock(&philo->shared->printf_mutex);
-		sleep_ms(philo->shared->init_time_to_sleep);
-		return (1);
-	}
-	else
-	{
-		pthread_mutex_unlock(&philo->shared->printf_mutex);
-		return (0);
-	}
-}
-
-int	thinking(t_philo *philo)
-{
-	pthread_mutex_lock(&philo->shared->printf_mutex);
-	if (philo->shared->dinner_over == 0)
-	{
-		printf("%-10ld%-6dis thinking\n", get_dinner_time(philo->shared->dinner_start_time), philo->id);
-		pthread_mutex_unlock(&philo->shared->printf_mutex);
-		return (1);
-	}
-	else
-	{
-		pthread_mutex_unlock(&philo->shared->printf_mutex);
-		return (0);
-	}
-}
 
 void	*routine(void *philo_void)
 {
@@ -86,8 +53,8 @@ int	main(int argc, char **argv)
 
 	check_args(argc, argv);
 	init(argc, argv, &dinner, &shared);
-	// ft_print_program_struct(&dinner);
 	init_mutexes(&dinner);
+	shared.dinner_start_time = get_actual_time();
 	i = 0;
 	while (i < dinner.shared->nof_philos)
 	{

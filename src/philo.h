@@ -6,7 +6,7 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:44:43 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/31 16:12:50 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/31 16:21:10 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,10 @@ void		ft_print_program_struct(t_dinner *program);
 // mutexes_utils.c
 void		init_mutexes(t_dinner *dinner);
 void		destroy_mutexes(t_dinner *dinner);
+
+// sleeping_thinking.c
+int			sleeping(t_philo *philo);
+int			thinking(t_philo *philo);
 
 // time.c
 void		sleep_ms(long period);
