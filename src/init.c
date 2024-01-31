@@ -6,7 +6,7 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 10:22:14 by mbartos           #+#    #+#             */
-/*   Updated: 2024/01/31 10:20:43 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/01/31 10:22:36 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ long int	get_actual_time_ms(void)
 	return (time_in_ms);
 }
 
-long int	get_party_time(long time)
+long int	get_dinner_time(long time)
 {
 	long	party_time;
 
