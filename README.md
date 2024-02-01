@@ -76,11 +76,11 @@ Different checkers can be used. Such as:
 * Compile with `-fsanitize=thread` flag - see different CFLAGS in [Makefile](Makefile)
 * Or try helgrind tool (compile without `-fsanitize=thread` flag!):
 ```
-valgrind --tool=helgrind --fairsched=yes
+valgrind --tool=helgrind --fair-sched=yes
 ```
 * Or drd tool (compile without `-fsanitize=thread` flag!):
 ```
-valgrind --tool=drd --fairsched=yes
+valgrind --tool=drd --fair-sched=yes
 ```
 
 ## What I learned during this project
