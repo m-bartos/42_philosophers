@@ -2,13 +2,13 @@
 The goal of this project is to explore the basics of threading a process and try to solve the [Dining philosophers problem](https://en.wikipedia.org/wiki/Dining_philosophers_problem).
 
 ## Project description
-Here are the key points to understand this assignment:
+The key points to understand the assignment:
 * The scenario involves multiple philosophers seated at a round table.
 * A large bowl of spaghetti is placed at the centre of the table.
 * Philosophers engage in three activities: eating, thinking, and sleeping.
-* While eating, they do not think or sleep.
-* While thinking, they do not eat or sleep.
-* While sleeping, they do not eat or think.
+  - While eating, they do not think or sleep.
+  - While thinking, they do not eat or sleep.
+  - While sleeping, they do not eat or think.
 * Forks are available on the table, with the same number as philosophers.
 * Due to inconvenience, a philosopher takes both their right and left forks to eat.
 * After finishing eating, philosophers place their forks back on the table and start sleeping.
@@ -69,10 +69,10 @@ You can try different inputs:
 ## Implementation
 * Each philosopher is a thread
 * There is another thread for watching if any philosopher died or all philosophers have eaten at least the number of times they should
-* Different struct composition is implemented for each type of thread - philosopher thread X checking thread (fo more info see `philo.h`)
+* Different struct composition is implemented for each type of thread - philosopher thread X checking thread (for more info see `philo.h`)
 
 ## What I learned during this project
-* Understanding the mechanics of threads in C (running parallel, shared memory, mutexes etc.)
+* Understanding the mechanics of threads in C (running parallel, shared memory, data races, deadlocks, mutexes, etc.)
 * Using new thread functions such as: `pthread_create`, `pthread_join`, `pthread_mutex_init`, `pthread_mutex_lock`, `pthread_mutex_unlock`, and `pthread_mutex_destroy`.
 * Enhancing proficiency with structs, struct pointers and pointers to structs inside other structs
 
