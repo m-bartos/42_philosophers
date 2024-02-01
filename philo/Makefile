@@ -6,7 +6,7 @@
 #    By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/21 10:59:06 by mbartos           #+#    #+#              #
-#    Updated: 2024/01/31 17:29:14 by mbartos          ###   ########.fr        #
+#    Updated: 2024/02/01 12:42:46 by mbartos          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,13 +22,12 @@ NAME =		philo
 #compiler
 CC =		gcc
 # CFLAGS =	-Wall -Wextra -Werror -fsanitize=thread -g -lpthread
-CFLAGS =	-Wall -Wextra -Werror -g -pthread
-# CFLAGS =	-Wall -Wextra -Werror -pthread
+# CFLAGS =	-Wall -Wextra -Werror -g -pthread
+CFLAGS =	-Wall -Wextra -Werror -pthread
 
 #sources
-SRC_PATH =	src/
 SRC = 	philo.c init.c init_utils.c check_args.c checker_thread.c forks_handling.c libft_funcs.c mutexes_utils.c philo_utils.c eat_sleep_think.c time.c
-SRCS =	$(addprefix $(SRC_PATH), $(SRC))
+SRCS =	$(SRC)
 
 #objects
 OBJ_PATH =	obj/
