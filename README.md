@@ -26,9 +26,14 @@ side. If there is only one philosopher, there should be only one fork on the tab
 * To prevent philosophers from duplicating forks, you should protect the fork's state
 with a mutex for each of them.
 
+## Implementation
+* Each philosopher is a thread
+* There is another thread for watching if any philosopher died or all philosophers have eaten at least the number of times they should
+* Different struct composition is implemented for each type of thread (for more info see [philo.h](src/philo.h))
+
 ## How to use
 * First, you need to make: `Make`
-* Run the program with the command (last parameter is optional):
+* Run the program with the command (the last parameter is optional):
 ```
 ./philo [number_of_philosophers] [time_to_die] [time_to_eat] [time_to_sleep] [number_of_times_each_philosopher_must_eat]`
 
@@ -57,7 +62,8 @@ timestamp  | philo  |         action         |
 200            0     is sleeping
 ...
 ```
-### Examples
+
+## Examples
 You can try different inputs:
 * `./philo 1 800 200 200` The philosopher should not eat and should die.
 * `./philo 5 800 200 200` No philosopher should die.
@@ -65,11 +71,17 @@ You can try different inputs:
 * `./philo 4 410 200 200` No philosopher should die.
 * `./philo 4 310 200 100` One philosopher should die.
 
-
-## Implementation
-* Each philosopher is a thread
-* There is another thread for watching if any philosopher died or all philosophers have eaten at least the number of times they should
-* Different struct composition is implemented for each type of thread - philosopher thread X checking thread (for more info see `philo.h`)
+## Checking threads data races, deadlocks, etc.
+Different checkers can be used. Such as:
+* Compile with `-fsanitize=thread` flag - see different CFLAGS in [Makefile](Makefile)
+* Or try helgrind tool (compile without `-fsanitize=thread` flag!):
+```
+valgrind --tool=helgrind --fairsched=yes
+```
+* Or drd tool (compile without `-fsanitize=thread` flag!):
+```
+valgrind --tool=drd --fairsched=yes
+```
 
 ## What I learned during this project
 * Understanding the mechanics of threads in C (running parallel, shared memory, data races, deadlocks, mutexes, etc.)
