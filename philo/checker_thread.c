@@ -6,7 +6,7 @@
 /*   By: mbartos <mbartos@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 14:44:37 by mbartos           #+#    #+#             */
-/*   Updated: 2024/02/01 12:44:30 by mbartos          ###   ########.fr       */
+/*   Updated: 2024/02/01 12:45:42 by mbartos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	are_philos_dead(t_dinner *dinner)
 		{
 			pthread_mutex_lock(&dinner->shared->printf_mtx);
 			time = get_dinner_time(dinner->shared->dinner_start_time);
-			printf("%-10ld%-6dis dead\n", time, dinner->philos[i].id);
+			printf("%-10ld%-6dis dead\n", time, dinner->philos[i].id + 1);
 			dinner->shared->dinner_over = 1;
 			pthread_mutex_unlock(&dinner->shared->printf_mtx);
 			pthread_mutex_unlock(&philo->eating_start_time_mtx);
